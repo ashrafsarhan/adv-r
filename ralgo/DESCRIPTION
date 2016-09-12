@@ -4,7 +4,6 @@ Title: Provides euclidian algorithm to find the greates common divisor of two in
 Version: 0.1.0
 Author: Ashraf Sarhan <ashraf.sar7an@gmail.com>, Lemonisa Lee <lemonisa.lee@gmail.com>
 Maintainer: Ashraf Sarhan <ashraf.sar7an@gmail.com>
-Description: ralgo provides implementation for the Euclidian algorithm
-to find the greatest common divisor of two numbers.
+Description: ralgo provides implementation for the Euclidian algorithm to find the greatest common divisor of two numbers.
 License: GPLv3
 LazyData: TRUE
