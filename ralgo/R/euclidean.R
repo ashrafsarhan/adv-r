@@ -1,8 +1,21 @@
-#Name: Yumeng Li
-#Liuid: yumli241
+#' Building a function to find the greatest common divisor of two numbers
+#'
+#' THis function calculates by using the method of Euclidian algorithm
+#'
+#'@param a an integer of original numbers
+#'@param b an integer of original numbers
+#'@examples
+#'euclidian(123612, 13892347912)
+#'euclidian(123612, -13892347912)
+#'euclidian(-100, 1000)
+#'euclidian(100, 1000)
+#'@return a positive integer the greatest common divisor of two integers
+#'@author Yumeng Li
+#'@details This function runs a calculation by theory of the Euclidean algorithm
+#'which calculates the greatest common divisor (GCD) of two natural numbers a and b.
+#'The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
+#'@export
 
-#1.1 Write the R code
-#1.1.1 euclidean()
 
 euclidian <- function(a,b) {
   x = abs(a)
@@ -16,13 +29,11 @@ euclidian <- function(a,b) {
         break()
       }
     }
-    abs(x)
   }else{
-    print("a, b must be intergers!") 
+    print("a, b must be intergers!")
   }
+  return(abs(x))
 }
 
-#euclidian(123612, 13892347912)
-#euclidian(123612, -13892347912)
-#euclidian(-100, 1000)
-#euclidian(100, 1000)
+
+
