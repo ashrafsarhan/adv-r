@@ -7,14 +7,15 @@
 
 # To do: Reference link to the dijkstra function later.
 
-#' Discription about the dataset included in the package'
-#' @param v1 is a vector of integers
-#' @param v2 is a vector of integers
-#' @param w is a vector that contains weights of the edges
-#' @author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
-#' @details This dataset contains a graph with tre varibles
-#' and should be used as an example with the Dijkstra function
-#' @references \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
+#' A dataset containing three variables, v1, v2 and w.
+#' @format A data frame with 18 rows
+#' \describe{
+#'  \item{v1}{Contains edges for the graph}
+#'  \item{v2}{Contains edges for the graph}
+#'  \item{w}{Coresponds to the weight for each node}
+#' }
+#' @souce \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
+"wiki_graph"
 
 #### Assignment 1.2.3 ####
 

@@ -29,6 +29,6 @@ euclidian(-100, 1000)
 euclidian(100, 1000)
 }
 \author{
-Yumeng Li
+Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 }
 

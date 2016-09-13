@@ -3,30 +3,18 @@
 \docType{data}
 \name{wiki_graph}
 \alias{wiki_graph}
-\title{Discription about the dataset included in the package'}
-\format{An object of class \code{data.frame} with 18 rows and 3 columns.}
+\title{A dataset containing three variables, v1, v2 and w.}
+\format{A data frame with 18 rows
+\describe{
+ \item{v1}{Contains edges for the graph}
+ \item{v2}{Contains edges for the graph}
+ \item{w}{Coresponds to the weight for each node}
+}}
 \usage{
 wiki_graph
 }
-\arguments{
-\item{v1}{is a vector of integers}
-
-\item{v2}{is a vector of integers}
-
-\item{w}{is a vector that contains weights of the edges}
-}
 \description{
-Discription about the dataset included in the package'
-}
-\details{
-This dataset contains a graph with tre varibles
-and should be used as an example with the Dijkstra function
-}
-\author{
-Yumeng Li, Mattias Karlsson, Ashraf Sarhan
-}
-\references{
-\url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
+A dataset containing three variables, v1, v2 and w.
 }
 \keyword{datasets}
 
