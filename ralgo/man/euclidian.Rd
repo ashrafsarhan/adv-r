@@ -3,6 +3,9 @@
 \name{euclidian}
 \alias{euclidian}
 \title{Building a function to find the greatest common divisor of two numbers}
+\source{
+\url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
+}
 \usage{
 euclidian(a, b)
 }

@@ -1,12 +1,3 @@
-# Roxygen2 Document
-
-# The varibles in the data.frame
-
-# A reference to the wikipedia page
-# 
-
-# To do: Reference link to the dijkstra function later.
-
 #' This dataset is used for demonstrating the Dijkstra algorithm,
 #' the three variables representing a graph.
 #' 
@@ -18,8 +9,6 @@
 #' }
 #' @references \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
 "wiki_graph"
-
-#### Assignment 1.2.3 ####
 
 # The dataset that should be included in the package
 wiki_graph <-

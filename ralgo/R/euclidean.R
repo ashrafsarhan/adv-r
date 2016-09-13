@@ -14,9 +14,8 @@
 #'@details This function runs a calculation by theory of the Euclidean algorithm
 #'which calculates the greatest common divisor (GCD) of two natural numbers a and b.
 #'The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
-#'@reference \url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
+#'@source \url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
 #'@export
-
 
 euclidian <- function(a,b) {
   x = abs(a)

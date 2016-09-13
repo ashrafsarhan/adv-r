@@ -3,11 +3,14 @@
 \name{dijkstra}
 \alias{dijkstra}
 \title{Dijkstras algorithm}
+\source{
+\url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
+}
 \usage{
 dijkstra(graph, init_node)
 }
 \arguments{
-\item{graph}{is a data.frame contaning}
+\item{graph}{is a data.frame contaning the edges in the graph, varibles v1, v2 and w}
 
 \item{init_node}{is a numeric value that exist in the graph data.frame}
 }
