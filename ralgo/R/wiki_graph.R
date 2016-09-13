@@ -7,14 +7,16 @@
 
 # To do: Reference link to the dijkstra function later.
 
-#' A dataset containing three variables, v1, v2 and w.
-#' @format A data frame with 18 rows
+#' This dataset is used for demonstrating the Dijkstra algorithm,
+#' the three variables representing a graph.
+#' 
+#' @format A data.frame with 18 rows and three variables:
 #' \describe{
 #'  \item{v1}{Contains edges for the graph}
 #'  \item{v2}{Contains edges for the graph}
 #'  \item{w}{Coresponds to the weight for each node}
 #' }
-#' @souce \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
+#' @references \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
 "wiki_graph"
 
 #### Assignment 1.2.3 ####

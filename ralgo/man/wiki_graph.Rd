@@ -16,5 +16,8 @@ wiki_graph
 \description{
 A dataset containing three variables, v1, v2 and w.
 }
+\references{
+\url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
+}
 \keyword{datasets}
 
