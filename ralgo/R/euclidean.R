@@ -1,6 +1,6 @@
 #' Building a function to find the greatest common divisor of two numbers
 #'
-#' THis function calculates by using the method of Euclidian algorithm
+#' This function calculates by using the method of Euclidian algorithm
 #'
 #'@param a an integer of original numbers
 #'@param b an integer of original numbers
