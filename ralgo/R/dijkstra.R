@@ -35,6 +35,6 @@ dijkstra <- function(graph, init_node){
     }
     
   }
-  rd$dist
+  return(rd$dist)
 
 }
