@@ -1,3 +1,16 @@
+#'Dijkstras algorithm
+#'
+#'  
+#'
+#'@param graph is a data.frame contaning the edges in the graph, varibles v1, v2 and w 
+#'@param init_node is a numeric value that exist in the graph data.frame
+#'@details The algoritm takes a graph and an initial node and iteratively calculates the shortest distance between the initial node and every other node in the graph.
+#'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
+#'@examples
+#'dijkstra(wiki_graph, 1)
+#'dijkstra(wiki_graph, 3)
+#'@reference \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
+#'@export
 dijkstra <- function(graph, init_node){
   # initiate unvisited vertex set
   vertexQ = unique(graph$v1)

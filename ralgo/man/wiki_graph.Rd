@@ -3,8 +3,9 @@
 \docType{data}
 \name{wiki_graph}
 \alias{wiki_graph}
-\title{A dataset containing three variables, v1, v2 and w.}
-\format{A data frame with 18 rows
+\title{This dataset is used for demonstrating the Dijkstra algorithm,
+the three variables representing a graph.}
+\format{A data.frame with 18 rows and three variables:
 \describe{
  \item{v1}{Contains edges for the graph}
  \item{v2}{Contains edges for the graph}
@@ -14,7 +15,8 @@
 wiki_graph
 }
 \description{
-A dataset containing three variables, v1, v2 and w.
+This dataset is used for demonstrating the Dijkstra algorithm,
+the three variables representing a graph.
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
