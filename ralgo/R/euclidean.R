@@ -15,9 +15,10 @@
 #'which calculates the greatest common divisor (GCD) of two natural numbers a and b.
 #'The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
 #'@source \url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
+#'@seealso \code{\link{dijkstra}}
 #'@export
 
-euclidian <- function(a,b) {
+euclidean <- function(a,b) {
   x = abs(a)
   y = abs(b)
   if((round(x) == x) && (round(y) == y)){

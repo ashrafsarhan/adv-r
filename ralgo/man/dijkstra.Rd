@@ -5,6 +5,7 @@
 \title{Dijkstras algorithm}
 \source{
 \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
+#'@seealso \code{\link{euclidean}}
 }
 \usage{
 dijkstra(graph, init_node)

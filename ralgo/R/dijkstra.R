@@ -8,6 +8,7 @@
 #'dijkstra(wiki_graph, 1)
 #'dijkstra(wiki_graph, 3)
 #'@source \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
+#'#'@seealso \code{\link{euclidean}}
 #'@export
 dijkstra <- function(graph, init_node){
   # initiate unvisited vertex set
