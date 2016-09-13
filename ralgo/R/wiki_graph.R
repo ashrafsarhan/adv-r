@@ -3,8 +3,18 @@
 # The varibles in the data.frame
 
 # A reference to the wikipedia page
-# https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode
+# 
 
+# To do: Reference link to the dijkstra function later.
+
+#' Discription about the dataset included in the package'
+#' @param v1 is a vector of integers
+#' @param v2 is a vector of integers
+#' @param w is a vector that contains weights of the edges
+#' @author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
+#' @details This dataset contains a graph with tre varibles
+#' and should be used as an example with the Dijkstra function
+#' @references \url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode}
 
 #### Assignment 1.2.3 ####
 

@@ -10,7 +10,7 @@
 #'euclidian(-100, 1000)
 #'euclidian(100, 1000)
 #'@return a positive integer the greatest common divisor of two integers
-#'@author Yumeng Li
+#'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@details This function runs a calculation by theory of the Euclidean algorithm
 #'which calculates the greatest common divisor (GCD) of two natural numbers a and b.
 #'The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
