@@ -3,9 +3,6 @@
 \name{euclidean}
 \alias{euclidean}
 \title{Building a function to find the greatest common divisor of two numbers}
-\source{
-\url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
-}
 \usage{
 euclidean(a, b)
 }
@@ -33,6 +30,9 @@ euclidian(100, 1000)
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
+}
+\references{
+\url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
 }
 \seealso{
 \code{\link{dijkstra}}

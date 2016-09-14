@@ -3,10 +3,6 @@
 \name{dijkstra}
 \alias{dijkstra}
 \title{Dijkstras algorithm}
-\source{
-\url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
-#'@seealso \code{\link{euclidean}}
-}
 \usage{
 dijkstra(graph, init_node)
 }
@@ -27,5 +23,11 @@ dijkstra(wiki_graph, 3)
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
+}
+\references{
+\url{https://en.wikipedia.org/wiki/Dijkstra's_algorithm}
+}
+\seealso{
+\code{\link{euclidean}}
 }
 
