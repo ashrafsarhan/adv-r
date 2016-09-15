@@ -1,3 +1,4 @@
+context('dijkstra tests')
 
 test_that("dijkstra", {
   expect_that(dijkstra(wiki_graph,20))

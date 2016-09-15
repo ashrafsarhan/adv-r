@@ -1,3 +1,5 @@
+context('euclidean tests')
+
 test_that("euclidean Character", {
   expect_that(euclidean(2,"A"))
   expect_that(euclidean(2,"A"))
