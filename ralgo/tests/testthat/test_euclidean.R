@@ -21,8 +21,8 @@ test_that("euclidean Logic,error", {
   expect_error(euclidean(TRUE,TRUE))
 })
 
-test_that("euclidean equal"){
+test_that("euclidean equal", {
   expect_that(euclidian(200,150), equals(50))
   expect_that(euclidian(5,20), equals(5))
-}
+})
 
