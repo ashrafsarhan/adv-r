@@ -9,4 +9,5 @@ Description: ralgo provides implementation for the Euclidian algorithm to find
     the greatest common divisor of two numbers.
 License: GPLv3
 LazyData: TRUE
+Suggests: testthat
 RoxygenNote: 5.0.1
