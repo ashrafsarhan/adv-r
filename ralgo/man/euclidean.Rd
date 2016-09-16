@@ -23,10 +23,10 @@ which calculates the greatest common divisor (GCD) of two natural numbers a and 
 The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
 }
 \examples{
-euclidian(123612, 13892347912)
-euclidian(123612, -13892347912)
-euclidian(-100, 1000)
-euclidian(100, 1000)
+euclidean(123612, 13892347912)
+euclidean(123612, -13892347912)
+euclidean(-100, 1000)
+euclidean(100, 1000)
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
