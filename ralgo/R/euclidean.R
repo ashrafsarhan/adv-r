@@ -14,15 +14,20 @@
 #'@details This function runs a calculation by theory of the Euclidean algorithm
 #'which calculates the greatest common divisor (GCD) of two natural numbers a and b.
 #'The greatest common divisor g is the largest natural number that divides both a and b without leaving a remainder.
-#'@references 
+#'@references
 #'\url{https://en.wikipedia.org/wiki/Euclidean_algorithm}
 #'@seealso \code{\link{dijkstra}}
 #'@export
 
 euclidean <- function(a,b) {
-  x = abs(a)
-  y = abs(b)
-  if((round(x) == x) && (round(y) == y)){
+  if (!(is.numeric(a) && is.numeric(b))) {
+    stop('args must be numeric!')
+  }else if(!(round(a) == a && round(b) == b)){
+    stop('args must be intergers!')
+  }else {
+    tryCatch({
+    x = abs(a)
+    y = abs(b)
     while(abs(x-y) != 0) {
       z = abs(x-y)
       x = min(x,y)
@@ -31,8 +36,9 @@ euclidean <- function(a,b) {
         break()
       }
     }
-  }else{
-    print("a, b must be intergers!")
+    return(abs(x))
+    }, error = function(e) {
+      message(e)
+    })
   }
-  return(abs(x))
 }
