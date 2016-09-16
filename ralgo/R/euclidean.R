@@ -5,10 +5,10 @@
 #'@param a an integer of original numbers
 #'@param b an integer of original numbers
 #'@examples
-#'euclidian(123612, 13892347912)
-#'euclidian(123612, -13892347912)
-#'euclidian(-100, 1000)
-#'euclidian(100, 1000)
+#'euclidean(123612, 13892347912)
+#'euclidean(123612, -13892347912)
+#'euclidean(-100, 1000)
+#'euclidean(100, 1000)
 #'@return a positive integer the greatest common divisor of two integers
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@details This function runs a calculation by theory of the Euclidean algorithm
