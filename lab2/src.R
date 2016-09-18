@@ -1,6 +1,16 @@
-#732A94_lab2
+#       ###    ########  ##     ##    ###    ##    ##  ######  ######## ########     ########     ##          ###    ########      #######  
+#      ## ##   ##     ## ##     ##   ## ##   ###   ## ##    ## ##       ##     ##    ##     ##    ##         ## ##   ##     ##    ##     ## 
+#     ##   ##  ##     ## ##     ##  ##   ##  ####  ## ##       ##       ##     ##    ##     ##    ##        ##   ##  ##     ##           ## 
+#    ##     ## ##     ## ##     ## ##     ## ## ## ## ##       ######   ##     ##    ########     ##       ##     ## ########      #######  
+#    ######### ##     ##  ##   ##  ######### ##  #### ##       ##       ##     ##    ##   ##      ##       ######### ##     ##    ##        
+#    ##     ## ##     ##   ## ##   ##     ## ##   ### ##    ## ##       ##     ##    ##    ##     ##       ##     ## ##     ##    ##        
+#    ##     ## ########     ###    ##     ## ##    ##  ######  ######## ########     ##     ##    ######## ##     ## ########     ######### 
+
 name <- 'Ashraf Sarhan'
 liuid <- 'ashsa762'
+library(markmyassignment)
+lab_path <- "https://raw.githubusercontent.com/MansMeg/AdvRCourse/master/Labs/Tests/lab2.yml"
+set_assignment(lab_path)
 
 #1.1 Conditional statements
 #1.1.1
@@ -219,7 +229,6 @@ repeat_my_moving_median <- function(x, n, ...) {
 }
 
 #1.5 Environment
-#TODO to be reviewed
 #1.5.1
 in_environment <- function(env) {
   content <- ls(env)
