@@ -1,0 +1,137 @@
+---
+title: "Vignette on package of Lingre"
+author: "Yumeng Li, Mattias Karlsson, Ashraf Sarhan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Vignette Goal
+
+The goal of this vignette is to introduce the package of lingre and describe in detail about how lingre solve a linear regression problem.
+
+## Function Discription
+
+In this package, we write the codes for a multiple regression model. The function is called linreg() and have two arguments formula and data. 
+
+By using methods coefficients(), resid(), and pred(), the function handles the linear problems and returns the multi-results as an object of RC class of lingre.
+
+- regressions coefficients
+- fitted values
+- residuals
+- degrees of freedom
+- residuals variance
+- variance of the regression coefficients
+- p-values for each regression coefficient
+
+## Unit Tests
+We use a well-known dataset of "iris" and run the function of lm() to fit a linear model and create unit tests in order to check that the function return the same values as lm().
+
+```
+data(iris)
+
+fit <- lm(formula = Petal.Length ~ Petal.Width, data = iris)
+
+summary(fit)
+coefficients <- summary(fit)$coefficients
+residuals <- summary(fit)$residuals
+sigma<- summary(fit)$sigma
+summary(fit)$fstatistic
+
+
+test_that("linreg methods", {
+  expect_equal(linreg$residuals(formula = Petal.Length ~ Petal.Width, data = iris),
+               residuals)
+  expect_equal(linreg_class$df(formula = Petal.Length ~ Petal.Width, data = iris),
+               df)
+  expect_equal(linreg_class$sigma2(formula = Petal.Length ~ Petal.Width, data = iris),
+               sigma)
+
+})
+
+```
+
+## Methods Implementing
+
+This step is to implement different methods for the object.
+
+```
+linreg <- function(formula, data){
+  
+  # test
+  stopifnot(formula == as.formula(formula), is.data.frame(data))
+  
+  #  model.frame picks the right variables from the formula-object
+  X <- model.frame(formula = formula,
+                   data = data)
+  print(X)
+  # stores dependent-variable
+  Y <- X[,1]
+  print(Y)
+  # design matrix, independent-variables
+  X <- model.matrix(object = formula,
+                    data = X)
+  print(X)
+  XT <- t(X)
+  XTX <- XT %*% X
+  
+  if(all(eigen(XTX)$values <= 0)){
+    # test
+    # if eigenvalues are zero or less you can't invert the matrix
+    return("Cannot compute linear regression")
+    
+  } else {
+    
+    XTXInv <- solve(XTX) # calculates the inverse
+    betaHat <- XTXInv %*% XT %*% Y # estimates
+    betaHat <- round(x = betaHat, digits = 4) # matching with lm-function
+    YHat <- as.vector(X %*% betaHat) # fitted-values
+    eHat <- as.matrix(Y - YHat) # residuals
+    
+    df <- nrow(eHat) - ncol(X) # degrees of freedom
+    
+    s2 <- (t(eHat) %*% eHat) / df # variance
+    sigmaHat <- sqrt(s2) # standard-deviation
+
+    beta_variance <- c(s2) * XTXInv
+    t_ratio <- c(betaHat) / sqrt(diag(beta_variance)) # T-ratio
+    t_ratio <- round(x = t_ratio, digits = 2)
+    p_value <- 1 - pt(q = abs(t_ratio), df = df) # p-values
+    names(betaHat) <- names(t_ratio)
+```
+
+## Return a class linreg as an RC class
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```
+linreg_class <- setRefClass(
+  "linreg_class",
+  fields = list(fitted_values = "numeric",
+                residuals = "numeric",
+                df = "integer",
+                sigma2 = "numeric",
+                beta_estimate = "numeric",
+                beta_variance = "numeric",
+                t_ratio = "numeric",
+                p_value = "numeric"))
+
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+```
+linreg(Sepal.Length ~ Sepal.Width, iris)
+```
+

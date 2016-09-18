@@ -8,3 +8,4 @@ linreg_class <- setRefClass(
                 beta_variance = "numeric",
                 t_ratio = "numeric",
                 p_value = "numeric"))
+
