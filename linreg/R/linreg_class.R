@@ -7,5 +7,9 @@ linreg_class <- setRefClass(
                 beta_estimate = "numeric",
                 beta_variance = "numeric",
                 t_ratio = "numeric",
+<<<<<<< HEAD
                 p_value = "numeric"))
 
+=======
+                p_value = "numeric"))
+>>>>>>> origin/master
