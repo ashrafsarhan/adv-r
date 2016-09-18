@@ -246,22 +246,20 @@ cov <- function(X) {
 
 #1.7 Closures
 moment <- function(i) {
-  f <- switch(
-    i+1,
-    function(x) {
+  if (!is.numeric(i)) {
+    stop('i args must be numeric')
+  }
+  mom <- i
+  f <- function(x) {
+    if (mom == 0) {
       return(1)
-    },
-    function(x) {
-      return(0)
-    },
-    function(x) {
+    } else if (mom == 1) {
+      return(mean(x))
+    } else if (mom == 2) {
       return(var(x))
-    },
-    function(x) {
-      return((mean(x)-median(x))/var(x))
-    },
-    function(x) {
-      return(mean(x)/var(x))
+    } else {
+      mean <- mean(x)
+      return(sum((x-mean)^mom)/var(x)^mom)
     }
-  )
+  }
 }
