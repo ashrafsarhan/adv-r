@@ -232,11 +232,15 @@ cov <- function(X) {
   if(!is.data.frame(X)) {
     stop() 
   } else {
-    df <- as.data.frame(lapply(X, function(x) {
+    vect <- lapply(X, function(x) {
       sd(x)/mean(x)
-    }))
-    rownames(df) <- c('')
-    return(df)
+    })
+    cols <- names(vect)
+    rslt <- c()
+    for (c in cols) {
+      rslt[[c]] <- vect[[c]]
+    }
+    return(rslt)
     }
 }
 
