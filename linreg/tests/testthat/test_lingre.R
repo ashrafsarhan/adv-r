@@ -6,7 +6,7 @@ library(Formula)
 data(iris)
 
 # extract result from lm()
-fit <- lm(formula = Sepal.Width ~ Sepal.Length, data = iris)
+fit <- lm(formula = Sepal.Length ~ Sepal.Width, data = iris)
 
 summary(fit)
 coefficients <- summary(fit)$coefficients
@@ -21,7 +21,7 @@ p_value <- summary(fit)$p_value
 
 
 # extract result from lingre
-test <- linreg(Sepal.Width ~ Sepal.Length, iris)
+test <- linreg(Sepal.Length ~ Sepal.Width, iris)
 
 # unit test for each value
 test_that("linreg methods", {
@@ -30,7 +30,6 @@ test_that("linreg methods", {
   expect_equivalent(as.numeric(test$t_ratio), round(as.numeric(t_ratio), digits = 2))
   expect_equivalent(as.numeric(test$beta_estimate), round(as.numeric(beta_estimate), digits = 4))
   expect_equivalent(round(as.numeric(test$beta_variance), digits = 4), round(as.numeric(beta_variance), digits = 4))
-  expect_equivalent(round(sort(as.numeric(test$residuals)), digits = 2), 
-               round(sort(as.numeric(residuals)), digits = 2))
+  expect_equivalent(round(sort(as.numeric(test$residuals)), digits = 1),
+               round(sort(as.numeric(residuals)), digits = 1))
 })
-
