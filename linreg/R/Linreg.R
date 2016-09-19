@@ -2,7 +2,7 @@
 #'
 #' This function calculates fitted values, residuals, degrees of freedom, t-ratio and p-values
 #'
-#'@param formula, writen as a formula-object, see exemple.
+#'@param formula, writen as a formula-object, see example.
 #'@param data, a data.frame object
 #'@examples
 #'linreg(Sepal.Length ~ Sepal.Width, iris)
