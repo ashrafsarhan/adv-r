@@ -30,22 +30,6 @@ linreg <- function(formula, data){
   XT <- t(X)
   XTX <- XT %*% X
 
-  # test
-  stopifnot(formula == as.formula(formula), is.data.frame(data))
-
-  #  model.frame picks the right variables from the formula-object
-  X <- model.frame(formula = formula,
-                   data = data)
-
-  # stores dependent-variable
-  Y <- X[,1]
-
-  # design matrix, independent-variables
-  X <- model.matrix(object = formula,
-                    data = X)
-  XT <- t(X)
-  XTX <- XT %*% X
-
   if(all(eigen(XTX)$values <= 0)){
     # test
     # if eigenvalues are zero or less you can't invert the matrix
