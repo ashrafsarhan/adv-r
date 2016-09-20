@@ -1,6 +1,7 @@
 linreg_class <- setRefClass(
   "linreg_class",
   fields = list(
+                  formula = "character",
                   fitted_values = "numeric",
                   residuals = "numeric",
                   df = "integer",
@@ -11,24 +12,28 @@ linreg_class <- setRefClass(
                   p_value = "numeric"), 
   methods = list(
                   print = function() {
-                    print('should print out the coefficients and coefficient names, similar as done by the lm class.')
+                    cat('Call:\n','linreg(formula = ',formula[2],'~',formula[3],')\n\n',sep = '')
+                    beta_estimate 
                   },
                   plot = function() {
-                    print('should plot the following two plots using ggplot2. Remember to include ggplot2 in your package')
+                    cat('should plot the following two plots using ggplot2. Remember to include ggplot2 in your package')
                   },
                   resid = function() {
-                    print('should return the vector of residuals e.')
+                    return(residuals)
                   },
                   pred = function() {
-                    print('should return the predicted values ŷ.')
+                    return(fitted_values)
                   },
                   coef = function() {
-                    print('should return the coefficients as a named vector.')
+                    return(beta_estimate) 
                   },
                   summary = function() {
-                    print('summary() should return a similar printout as printed for lm objects, but you only need to present \n 
-                          the coefficients with their standard error, t-value and p-value as well as the estimate of ˆ and the degrees \n
-                          of freedom in the model.')
+                    cat('Call:\n','linreg(formula = ',formula[2],'~',formula[3],')\n\n',sep = '')
+                    mat <- matrix(c(beta_estimate, beta_variance, t_ratio, p_value),nrow = length(beta_estimate), ncol=4,byrow=FALSE)
+                    colnames(mat) <- c('Estimate', 'Std. Error', 't value', 'Pr(>|T|)')
+                    rownames(mat) <- names(beta_estimate)
+                    print.table(as.table(mat))
+                    cat('\nResidual standard error:', sigma2, 'on', df, 'degress of freedom', sep = ' ')
                   })
   )
 
