@@ -51,9 +51,9 @@ linreg <- function(formula, data){
     t_ratio <- round(x = t_ratio, digits = 2)
     p_value <- 1 - pt(q = abs(t_ratio), df = df) # p-values
     names(betaHat) <- names(t_ratio)
-
     # trying to store everything in the linreg_class
-    result <- linreg_class$new(fitted_values = YHat,
+    result <- linreg_class$new(formula = as.character(formula),
+                               fitted_values = YHat,
                                residuals = c(eHat),
                                df = df,
                                sigma2 = c(s2),
