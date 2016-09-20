@@ -19,6 +19,7 @@ In this package, we write the codes for a multiple regression model. The functio
 
 By using methods coefficients(), resid(), and pred(), the function handles the linear problems and returns the multi-results as an object of RC class of lingre.
 
+
 - regressions coefficients
 - fitted values
 - residuals
@@ -27,8 +28,22 @@ By using methods coefficients(), resid(), and pred(), the function handles the l
 - variance of the regression coefficients
 - p-values for each regression coefficient
 
+
+```
+test <- linreg(Sepal.Length ~ Sepal.Width, iris)
+test$print()  returns the formula
+test$resid()  returns the vector of residuals e.
+test$plot()  plots the 2 plots
+test$pred()  returns the predicted values yHat
+test$coef()  returns the coefficients as a named vector.
+test$summary()  return a similar printout as printed for lm() objects, includes the coefficients with their standard error, t-value and p-value as well as the estimate of sd and the degrees
+of freedom in the model. 
+```
+
 ## Unit Tests
+
 We use a well-known dataset of "iris" and run the function of lm() to fit a linear model and create unit tests in order to check that the function return the same values as lm().
+
 
 ```
 data(iris)
@@ -61,8 +76,6 @@ test_that("linreg methods", {
   expect_equivalent(round(sort(as.numeric(test$residuals)), digits = 2),
                round(sort(as.numeric(residuals)), digits = 2))
 })
-
-
 ```
 
 ## Methods Implementing
@@ -129,20 +142,19 @@ linreg_class <- setRefClass(
                 beta_variance = "numeric",
                 t_ratio = "numeric",
                 p_value = "numeric"))
-
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
 
 ## More Examples
 
+
 ```
-linreg(Sepal.Width ~ Sepal.Length, iris)
+test <- linreg(Sepal.Length ~ Sepal.Width, iris)
+test$print()
+test$resid()
+test$plot()
+test$pred()
+test$coef()
+test$summary()
 ```
 
