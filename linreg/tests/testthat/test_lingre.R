@@ -1,6 +1,3 @@
-library(testthat)
-context('linreg tests')
-
 library(Formula)
 
 data(iris)
