@@ -16,7 +16,26 @@ linreg_class <- setRefClass(
                     beta_estimate 
                   },
                   plot = function() {
-                    cat('should plot the following two plots using ggplot2. Remember to include ggplot2 in your package')
+                    #The first plot
+                    df <- data.frame(x=fitted_values, y=residuals)
+                    res_vs_fit_plot <-  ggplot(df, aes(x = x, y = y)) +
+                      geom_hline(yintercept=0, linetype="dotted", color="blue")+
+                      geom_smooth(color="yellow")+
+                      geom_point(aes(x = x, y = y), color="red")
+                    res_vs_fit_plot <- res_vs_fit_plot + ggtitle("Residuals vs Fitted") +
+                      xlab("Fitted values") + ylab("Residuals")
+                    
+                    
+                    #The second plot
+                    std_residuals <- abs(residuals / sd(residuals))
+                    df2 <- data.frame(x=fitted_values, y=sqrt(std_residuals))
+                    scaleLocationPlot <- ggplot(df2, aes(x = x, y = y)) +
+                      geom_smooth(color="gray")+
+                      geom_point(aes(x = x, y = y), color="black")
+                    scaleLocationPlot <- res_vs_fit_plot + ggtitle("Scale−Location") +
+                      xlab("Fitted values") + ylab(expression(sqrt("Standardized residuals")))
+                    
+                    grid.arrange(res_vs_fit_plot, scaleLocationPlot)
                   },
                   resid = function() {
                     return(residuals)
