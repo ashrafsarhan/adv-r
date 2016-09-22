@@ -16,25 +16,45 @@ linreg_class <- setRefClass(
                     beta_estimate 
                   },
                   plot = function() {
+                    #Data
+                    df <- data.frame(x=fitted_values, y=residuals,id = 1:length(fitted_values))
+                    std_residuals <- as.numeric(sqrt(abs(scale(residuals))))
+                    df2 <- df
+                    df2$y <- std_residuals
+                    
                     #The first plot
-                    df <- data.frame(x=fitted_values, y=residuals)
-                    res_vs_fit_plot <-  ggplot(df, aes(x = x, y = y)) +
-                      geom_hline(yintercept=0, linetype="dotted", color="blue")+
-                      geom_smooth(color="yellow")+
-                      geom_point(aes(x = x, y = y), color="red")
-                    res_vs_fit_plot <- res_vs_fit_plot + ggtitle("Residuals vs Fitted") +
-                      xlab("Fitted values") + ylab("Residuals")
+                    res_vs_fit_plot <- ggplot(data = df,
+                           aes(x = x, y = y)) +
+                      theme_bw() + 
+                      theme(plot.background = element_blank(),
+                            panel.grid.major = element_blank(),
+                            panel.grid.minor = element_blank(),
+                            axis.text.y = element_text(angle = 90),
+                            axis.ticks.length = unit(0.3,"cm")) +
+                      ggtitle("Residuals vs Fitted") +
+                      xlab("Fitted values") +
+                      ylab("Residuals") +
+                      geom_point(size = 3, shape = 1) +
+                      geom_hline(yintercept = 0, linetype = "dotted", col = "blue") +
+                      geom_smooth(se = FALSE, aes(col = "red"), show.legend = FALSE, method = "lm") +
                     
                     
                     #The second plot
-                    std_residuals <- abs(residuals / sd(residuals))
-                    df2 <- data.frame(x=fitted_values, y=sqrt(std_residuals))
-                    scaleLocationPlot <- ggplot(df2, aes(x = x, y = y)) +
-                      geom_smooth(color="gray")+
-                      geom_point(aes(x = x, y = y), color="black")
-                    scaleLocationPlot <- res_vs_fit_plot + ggtitle("Scale−Location") +
-                      xlab("Fitted values") + ylab(expression(sqrt("Standardized residuals")))
+                    scaleLocationPlot <- ggplot(data = df2,
+                           aes(x = x, y = y)) +
+                      theme_bw() + 
+                      theme(plot.background = element_blank(),
+                            panel.grid.major = element_blank(),
+                            panel.grid.minor = element_blank(),
+                            axis.text.y = element_text(angle = 90),
+                            axis.ticks.length = unit(0.3,"cm")) +
+                      ggtitle("Scale−Location") +
+                      xlab("Fitted values") +
+                      ylab(expression(sqrt("|Standardized residuals|"))) +
+                      geom_point(size = 3, shape = 1) +
+                      geom_smooth(se = FALSE, aes(col = "red"), show.legend = FALSE, method = "lm") +
                     
+                    #Print plots
                     grid.arrange(res_vs_fit_plot, scaleLocationPlot)
                   },
                   resid = function() {
