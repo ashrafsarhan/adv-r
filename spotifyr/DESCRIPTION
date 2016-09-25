@@ -1,0 +1,18 @@
+Package: spotifyr
+Type: Package
+Title: Spotify Web API R Wrapper
+Version: 0.1.0
+Author: Ashraf Sarhan <ashraf.sar7an@gmail.com>, Yumeng Li
+    <lemonisa.lee@gmail.com>, Mattias Karlsson <tillmattias@gmail.com>
+Maintainer: Ashraf Sarhan <ashraf.sar7an@gmail.com>
+Description: spotifyr provides R implementation for Spotify web api.
+URL: https://github.com/ashrafsarhan/adv-r/tree/master/spotifyr
+BugReports: https://github.com/ashrafsarhan/adv-r/issues
+License: GPL (>= 2)
+LazyData: TRUE
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
