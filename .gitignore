@@ -5,10 +5,6 @@
 # Session Data files
 .RData
 
-# Example code in package build process
-hello.R
-hello.Rd
-
 # Output files from R CMD build
 /*.tar.gz
 
