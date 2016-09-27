@@ -16,3 +16,5 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
+Imports:
+    httr
