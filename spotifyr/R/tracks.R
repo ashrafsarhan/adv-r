@@ -6,8 +6,8 @@
 #' This function is building the access to the specific tracks
 #'
 #'@param artistID a character of the ID of spotify tracks
-#'@param market takes a country-code. 2 letters
 #'@param access_token a charater of the access token
+#'@param market a charater of the market country
 #'@example trackIDs = '1CUVN2kn7mW5FjkqXTR2W1,387r02a1k6RZ4cwFraHkee'
 #'@return a response
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
