@@ -18,8 +18,9 @@ auth <- function(clientID, secret) {
     accept_json(),
     authenticate(clientID, secret),
     body = list(grant_type = 'client_credentials'),
-    encode = 'form',
-    verbose()
+    encode = 'form'
+    #verbose(data_out = FALSE) Not necessary to print all information every time
   )
+  stopifnot(response$status_code == 200)
   return(response)
 }
