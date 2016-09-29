@@ -6,7 +6,7 @@
 #'@param secret char spotify secret
 #'@return a response
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
-#'@details This function auth the user
+#'@details This function authenticate the user
 #'@references
 #'\url{https://developer.spotify.com/web-api/authorization-guide/}
 #'@seealso \code{\link{auth}}
