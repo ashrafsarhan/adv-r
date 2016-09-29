@@ -20,6 +20,14 @@ getArtists <- function(artistIDs, access_token) {
   HeaderValue = paste0('Bearer ', access_token)
   URI = paste0('https://api.spotify.com/v1/artists?ids=', artistIDs)
   response = GET(url = URI, add_headers(Authorization = HeaderValue))
-  stopifnot(response$status_code == 200)
+  if(status_code(response) == 400 ){
+    stop("Bad request")
+  } else if(status_code(response) == 500){
+    stop("Server failed")
+  } else if(status_code(response) == 300){
+    stop("Redirections")
+  } else if(status_code(response) == 100){
+    stop("Information from server")
+  }
   return(response)
 }
