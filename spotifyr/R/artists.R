@@ -13,6 +13,7 @@
 #'@references
 #'\url{https://developer.spotify.com/web-api/authorization-guide/}
 #'@seealso \code{\link{auth}}
+#'@import httr
 #'@export
 
 getArtists <- function(artistIDs, access_token) {
