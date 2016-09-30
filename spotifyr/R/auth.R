@@ -21,13 +21,13 @@ auth <- function(clientID, secret) {
     encode = 'form'
     #verbose(data_out = FALSE) Not necessary to print all information every time
   )
-  if(status_code(response) == 400 ){
+  if((status_code(response) %% 400) %in% c(1:99) ){
     stop("Bad request")
-  } else if(status_code(response) == 500){
+  } else if((status_code(response) %% 500) %in% c(1:99)){
     stop("Server failed")
-  } else if(status_code(response) == 300){
+  } else if((status_code(response) %% 300) %in% c(1:99)){
     stop("Redirections")
-  } else if(status_code(response) == 100){
+  } else if((status_code(response) %% 100) %in% c(1:99)){
     stop("Information from server")
   }
   return(response)
