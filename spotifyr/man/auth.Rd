@@ -18,7 +18,7 @@ a response
 This function auth the user
 }
 \details{
-This function auth the user
+This function authenticate the user
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
