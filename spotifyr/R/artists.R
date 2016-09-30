@@ -6,7 +6,6 @@
 #'
 #'@param artistID a character of the ID of spotify artist
 #'@param access_token a charater of the access token
-#'@example artistID = '1HBjj22wzbscIZ9sEb5dyf,7n2wHs1TKAczGzO7Dd2rGr'
 #'@return a response
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@details This function is to get the acesss to the artists

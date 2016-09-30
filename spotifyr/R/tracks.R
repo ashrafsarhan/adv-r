@@ -8,7 +8,6 @@
 #'@param artistID a character of the ID of spotify tracks
 #'@param access_token a charater of the access token
 #'@param market a charater of the market country
-#'@example trackIDs = '1CUVN2kn7mW5FjkqXTR2W1,387r02a1k6RZ4cwFraHkee'
 #'@return a response
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@details This function is to get the acesss to the specific tracks
