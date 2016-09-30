@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Vignette on package of Spotifyr"
+author: "Yumeng Li, Mattias Karlsson, Ashraf Sarhan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -9,50 +9,163 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Vignette Goal
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+The goal of this vignette is to introduce the package of Sportifyr and describe in detail about how the package of sportifyr connect to web API Spotify.
 
-## Vignette Info
+## Function Discription
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+In this package, we write the codes of three functions to access the data in API. The function are called getArtists(), auth(), getAudioFeatures() and getTracks(). 
 
-## Styles
+By using auth()functions, the user is authenticated. It takes two parameters (client ID, secret) to check if it is right, and it returns 200 response with access token. Then the user can get access to the data of spotify artists, tracks and the features of audio.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+A simple Shiny application is implemented in  the package to connect to the
+API.
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
 
-## Figures
+```
+auth <- function(clientID, secret) {
+  response = POST(
+    'https://accounts.spotify.com/api/token',
+    accept_json(),
+    authenticate(clientID, secret),
+    body = list(grant_type = 'client_credentials'),
+    encode = 'form'
+    #verbose(data_out = FALSE) Not necessary to print all information every time
+  )
+  stopifnot(response$status_code == 200)
+  return(response)
+}
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+getArtists <- function(artistIDs, access_token) {
+  HeaderValue = paste0('Bearer ', access_token)
+  URI = paste0('https://api.spotify.com/v1/artists?ids=', artistIDs)
+  response = GET(url = URI, add_headers(Authorization = HeaderValue))
+  return(response)
+}
+
+
+getTracks <- function(trackIDs, market, access_token) {
+  HeaderValue = paste0('Bearer ', access_token)
+  URI = paste0('https://api.spotify.com/v1/tracks?ids=', trackIDs, '&market=', market)
+  response = GET(url = URI, add_headers(Authorization = HeaderValue))
+  return(response)
+}
+
+getAudioFeatures <- function(trackIDs, access_token) {
+  HeaderValue = paste0('Bearer ', access_token)
+  URI = paste0('https://api.spotify.com/v1/audio-features?ids=', trackIDs)
+  response = GET(url = URI, add_headers(Authorization = HeaderValue))
+  return(response)
+}
+
+
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## Unit Tests
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+We implement function to connect to the API and download data to the R session. The unit test is written to test the inputs and outputs of the functions, the limits of the API configuration, whether the function always provide the given value for a specific set of inputs.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+```
+
+context('auth tests')
+
+clientID = 'a223e7590d9043f1849bffa7ef86b102'
+secret = 'aa351a255a8c49e7a4d69a8c2f893175'
+
+test_that("Test Client Credentials Flow", {
+  #Happy scenario
+  expect_equivalent(auth(clientID, secret)$status_code, 200)
+})
+
+secret = 'aa351a255a8c49e7a4d69a8c2f893175###'
+
+test_that("Test with invalid ID/secret", {
+  #Sad scenario
+  expect_error(auth(clientID, secret)$status_code != 200)
+})
+
+
+context('artists tests')
+
+clientID = 'a223e7590d9043f1849bffa7ef86b102'
+secret = 'aa351a255a8c49e7a4d69a8c2f893175'
+artistID = '1HBjj22wzbscIZ9sEb5dyf'
+token <- content(auth(clientID,secret))$access_token
+
+test_that("Test valid ID/secret", {
+  #Happy scenario
+  expect_equivalent(getArtists(artistID,token)$status_code, 200)
+})
+
+artistID = 'aa351a255a8c49e7a4d69a8c2f893175###'
+
+test_that("Test with invalid ID/secret", {
+  #Sad scenario
+  expect_error(getArtists(artistID,token)$status_code != 200)
+})
+
+
+context('tracks tests')
+
+clientID = 'a223e7590d9043f1849bffa7ef86b102'
+secret = 'aa351a255a8c49e7a4d69a8c2f893175'
+artistID = '1HBjj22wzbscIZ9sEb5dyf'
+trackIDs = '1CUVN2kn7mW5FjkqXTR2W1'
+token <- content(auth(clientID,secret))$access_token
+
+test_that("Test valid ID/secret", {
+  #Happy scenario
+  expect_equivalent(getTracks(artistID,"se",token)$status_code, 200)
+})
+
+artistID = 'aa351a255a8c49e7a4d69a8c2f893175###'
+
+test_that("Test with invalid ID/secret", {
+  #Sad scenario
+  expect_error(getTracks(artistID,"se",token)$status_code != 200)
+})
+
+artistID = '1HBjj22wzbscIZ9sEb5dyf'
+
+test_that("Test valid AudioFeatures", {
+  #Happy scenario
+  expect_equivalent(getAudioFeatures(artistID,"se",token)$status_code, 200)
+})
+
+artistID = 'aa351a255a8c49e7a4d69a8c2f893175###'
+
+test_that("Test invalid ID, AudioFeatures", {
+  #Sad scenario
+  expect_error(getAudioFeatures(artistID,"se",token)$status_code != 200)
+})
+
+```
+
+
+## Shiny application
+
+The simple Shiny application that makes it possible to interactively analyze data using this API package. 
+
+```
+
+```
+
 
 ## More Examples
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```
+clientID = 'a223e7590d9043f1849bffa7ef86b102'
+secret = 'aa351a255a8c49e7a4d69a8c2f893175'
+artistID = '1HBjj22wzbscIZ9sEb5dyf'
+trackIDs = '1CUVN2kn7mW5FjkqXTR2W1'
+token <- content(auth(clientID,secret))$access_token
+
+auth(clientID, secret)
+getArtists(artistID,token)
+getAudioFeatures(artistID,"se",token)
 ```
 
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
