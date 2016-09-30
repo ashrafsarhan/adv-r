@@ -18,6 +18,7 @@
 #'@export
 
 getTracks <- function(trackIDs, market, access_token) {
+  stopifnot(is.character(trackIDs),is.character(market),is.character(access_token))
   HeaderValue = paste0('Bearer ', access_token)
   URI = paste0('https://api.spotify.com/v1/tracks?ids=', trackIDs, '&market=', market)
   response = GET(url = URI, add_headers(Authorization = HeaderValue))

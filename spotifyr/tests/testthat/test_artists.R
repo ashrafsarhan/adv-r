@@ -10,9 +10,6 @@ test_that("Test valid ID/secret", {
   expect_equivalent(getArtists(artistID,token)$status_code, 200)
 })
 
-artistID = 'aa351a255a8c49e7a4d69a8c2f893175###'
-
 test_that("Test with invalid ID/secret", {
-  #Sad scenario
-  expect_error(getArtists(artistID,token)$status_code != 200)
+  expect_error(getArtists(artistID,TRUE))
 })

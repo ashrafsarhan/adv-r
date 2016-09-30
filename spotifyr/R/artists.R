@@ -17,6 +17,7 @@
 #'@export
 
 getArtists <- function(artistIDs, access_token) {
+  stopifnot(is.character(artistIDs),is.character(access_token))
   HeaderValue = paste0('Bearer ', access_token)
   URI = paste0('https://api.spotify.com/v1/artists?ids=', artistIDs)
   response = GET(url = URI, add_headers(Authorization = HeaderValue))

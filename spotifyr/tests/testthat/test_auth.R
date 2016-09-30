@@ -8,9 +8,6 @@ test_that("Test Client Credentials Flow", {
   expect_equivalent(auth(clientID, secret)$status_code, 200)
 })
 
-secret = 'aa351a255a8c49e7a4d69a8c2f893175###'
-
 test_that("Test with invalid ID/secret", {
-  #Sad scenario
-  expect_error(auth(clientID, secret)$status_code != 200)
+  expect_error(auth(artistID,TRUE))
 })

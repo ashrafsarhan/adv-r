@@ -13,6 +13,7 @@
 #'@import httr
 #'@export
 auth <- function(clientID, secret) {
+  stopifnot(is.character(clientID),is.character(secret))
   response = POST(
     'https://accounts.spotify.com/api/token',
     accept_json(),
