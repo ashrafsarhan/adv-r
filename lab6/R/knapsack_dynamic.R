@@ -1,7 +1,6 @@
-#' Dynamic programming solution for the 0/1 knapsack problem.
+#' Brute-force search is guaranteed to give a correct answer in all situations for the knapsack problem.
 #'
-#' This function creates an algorithm that can solve the knapsack problem
-#' exact by iterating over all possible values of w.
+#' This function calculates all possible alternatives and return the maximum value.
 #'
 #'@param x, data.frame with with two variables weight(w) and value(v)
 #'@param W, the size of knapsack
@@ -10,9 +9,11 @@
 #'brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
 #'brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
 #'brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+#'@references
+#'\url{https://en.wikipedia.org/wiki/Knapsack_problem#0.2F1_knapsack_problem}
 #'@return the maximum knapsack value and which elements
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
-#'@details This function should return the same results as the brute force algorithm.
+#'@details This function calculates in the easiest way to enumerate all different combinations.
 #'@export
 
 
