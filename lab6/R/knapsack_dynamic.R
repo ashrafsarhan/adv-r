@@ -1,3 +1,23 @@
+#' Dynamic programming solution for the 0/1 knapsack problem.
+#'
+#' This function creates an algorithm that can solve the knapsack problem
+#' exact by iterating over all possible values of w.
+#'
+#'@param x, data.frame with with two variables weight(w) and value(v)
+#'@param W, the size of knapsack
+#'@examples
+#'brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
+#'brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
+#'brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+#'brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+#'@return the maximum knapsack value and which elements
+#'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
+#'@details This function should return the same results as the brute force algorithm.
+#'@export
+
+
+
+# generate data
 set.seed(42)
 n <- 2000
 knapsack_objects <-
@@ -9,12 +29,19 @@ knapsack_objects <-
 # 1.1.3 Dynamic programming
 # wiki method
 knapsack_dynamic <- function(x, W){
+  stopifnot(is.data.frame(x),
+            is.numeric(W),
+            is.numeric(x$w),
+            is.numeric(x$v),
+            x$w >= 0,
+            x$v >= 0)
+
   n = nrow(x)
-  
-  #initilize m, use 1st col and row as "0"
+
+  #initialize m, use 1st col and row as "0"
   m = data.frame(matrix(nrow=n+1, ncol=W+1))
   m[1, ] = 0
-  
+
   for(i in 1:n){
     ii = i + 1
     for(j in 0:W){
@@ -25,14 +52,14 @@ knapsack_dynamic <- function(x, W){
         m[ii,jj] = max(m[ii-1,jj], m[ii-1, jj-x[i, ]$w] + x[i, ]$v)
     }
   }
-  
+
 
   # get elements
   v = c()
   for(i in 1:n){
     v[i] = 0
   }
-  
+
   j = W + 1
   i = n + 1
   while(i > 1){
@@ -40,18 +67,30 @@ knapsack_dynamic <- function(x, W){
       v[i-1] = 1
       j = j - x[i-1, ]$w
     }
-    
+
     i = i - 1
   }
-  
+
   ev = c()
   for(i in 1:n){
-    if(v[i] == 1) ev = c(ev, i) 
+    if(v[i] == 1) ev = c(ev, i)
   }
-  
+
   list(value=round(m[n+1, W+1]), elements=ev)
-  
+
 }
 
+
+#knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+#knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+#knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
+#knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
+#knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
+
+system.time(knapsack_dynamic(knapsack_objects[1:16,], 2000))
+
+# system.time(knapsack_dynamic(knapsack_objects[1:16,], 2000))
+# user  system elapsed
+# 6.30 0.00 6.32
 
 
