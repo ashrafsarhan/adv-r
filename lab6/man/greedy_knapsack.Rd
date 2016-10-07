@@ -18,8 +18,8 @@ Greedy heuristic algorithm for the knapsack problem
 This algorithm is approximative, it can be shown that it will return at least 50 % of the true maximum value. The value of this algorithm lies in the low computational time
 }
 \examples{
-greedy_knapsack(knapsack_objects[1:800], 3500)
-greedy_knapsack(knapsack_objects[1:1200], 2000)
+greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
