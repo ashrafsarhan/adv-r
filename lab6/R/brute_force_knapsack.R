@@ -12,6 +12,10 @@
 #'@return the maximum knapsack value and which elements
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@details This function calculates in the easiest way to enumerate all different combinations.
+#'@seealso
+#'\code{\link{brute_force_knapsack_forfiling}}
+#'\code{\link{greedy_heuristic}}
+#'\code{\link{knapsack_dynamic}}
 #'@export
 
 

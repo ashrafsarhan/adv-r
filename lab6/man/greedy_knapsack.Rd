@@ -28,6 +28,8 @@ Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 \url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
 }
 \seealso{
-\code{\link{Greedy heuristic}}
+\code{\link{brute_force_knapsack_forfiling}}
+\code{\link{brute_force_knapsack}}
+\code{\link{knapsack_dynamic}}
 }
 
