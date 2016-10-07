@@ -1,5 +1,7 @@
 #'Greedy heuristic algorithm for the knapsack problem
 #'
+#' This function give a approximation, atleast 50 % of the true maxiumum
+#'
 #'@param x is a data.frame containing variables 'w' and 'v', weights and values
 #'@param W is the total size of the knapsack
 #'@details This algorithm is approximative, it can be shown that it will return at least 50 % of the true maximum value. The value of this algorithm lies in the low computational time
