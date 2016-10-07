@@ -7,7 +7,6 @@
 #'@examples
 #'knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
 #'knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
-#'knapsack_dynamick(x = knapsack_objects[1:12,], W = 2000)
 #'knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 #'@references
 #'\url{https://en.wikipedia.org/wiki/Knapsack_problem#0.2F1_knapsack_problem}
