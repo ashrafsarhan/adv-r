@@ -33,6 +33,8 @@ greedy_knapsack <- function(x, W){
   
   stopifnot(is.data.frame(x),
             is.numeric(W),
+            W != Inf,
+            W > 0,
             is.numeric(x$w),
             is.numeric(x$v),
             x$w >= 0,
