@@ -1,0 +1,99 @@
+---
+title: "Vignette on Lab6"
+author: "Yumeng Li, Mattias Karlsson, Ashraf Sarhan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Vignette Goal
+
+The goal of this vignette is to introduce the package of Sportifyr and describe in detail about how the package of sportifyr connect to web API Spotify.
+
+## Function Discription
+
+This package contains four diffrent functions for solving the knapsack problem.
+
+Brute Force function: brute_force_knapsack()
+Dynamic approch: knapsack_dynamic()
+Greedy approch: greedy_knapsack()
+
+The functions takes two arguments, x and W. x consists of a data.frame object with two variables, w and v,
+each observation has a weight and a value.
+
+## Unit Tests
+
+The unit tests checks wheter the dataset is in correct format for the package funtions
+
+```
+context('Test Brute force search')
+
+set.seed(42)
+n <- 2000
+knapsack_objects <-
+  data.frame(
+    w=sample(1:4000, size = n, replace = TRUE),
+    v=runif(n = n, 0, 10000)
+  )
+
+test_that('Brute force search',{
+  expect_equal(brute_force_knapsack(knapsack_objects[1:8,],3500)$value, 16770)
+  expect_equal(brute_force_knapsack(knapsack_objects[1:8,],3500)$elements, c(5,8))
+  expect_equal(brute_force_knapsack(knapsack_objects[1:12,],3500)$value, 16770)
+  expect_equal(brute_force_knapsack(knapsack_objects[1:12,],3500)$elements, c(5,8))
+  expect_equal(brute_force_knapsack(knapsack_objects[1:8,],2000)$value, 15428)
+  expect_equal(brute_force_knapsack(knapsack_objects[1:8,],2000)$elements, c(3,8))
+  expect_equal(brute_force_knapsack(knapsack_objects[1:12,],2000)$value, 15428)
+  expect_equal(brute_force_knapsack(knapsack_objects[1:12,],2000)$elements, c(3,8))
+})
+
+
+test_that('Brute force search',{
+  expect_error(brute_force_knapsack(knapsack_objects,TRUE))
+  expect_error(brute_force_knapsack(knapsack_objects,FALSE))
+  expect_error(brute_force_knapsack(knapsack_objects,Inf))
+  expect_error(brute_force_knapsack(knapsack_objects,-Inf))
+})
+
+test_that('Brute force search',{
+  expect_error(brute_force_knapsack(c(1:00),10))
+  expect_error(brute_force_knapsack(knapsack_objects,"x"))
+  expect_error(brute_force_knapsack(c(1:00),10))
+})
+
+colnames(knapsack_objects) <- c("a","b")
+
+test_that('Brute force search',{
+  expect_error(brute_force_knapsack(knapsack_objects,2000))
+})
+
+colnames(knapsack_objects) <- c("w","v")
+knapsack_objects$w <- -100
+
+test_that('Brute force search',{
+  expect_error(brute_force_knapsack(knapsack_objects,3500))
+})
+```
+
+## Examples
+
+```
+brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
+brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
+brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+
+greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
+
+knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
+knapsack_dynamick(x = knapsack_objects[1:12,], W = 2000)
+knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
+
+```
+
+

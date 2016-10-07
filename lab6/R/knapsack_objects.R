@@ -5,6 +5,7 @@
 #'  \item{w}{Contains weights}
 #'  \item{v}{Contains values}
 #' }
+#' @export
 "knapsack_objects"
 
 # The dataset that should be included in the package

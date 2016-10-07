@@ -29,4 +29,9 @@ brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 }
+\seealso{
+\code{\link{brute_force_knapsack_forfiling}}
+\code{\link{greedy_heuristic}}
+\code{\link{knapsack_dynamic}}
+}
 

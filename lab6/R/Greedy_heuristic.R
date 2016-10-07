@@ -1,29 +1,21 @@
 #'Greedy heuristic algorithm for the knapsack problem
 #'
+#' This function give a approximation, atleast 50 % of the true maxiumum
+#'
 #'@param x is a data.frame containing variables 'w' and 'v', weights and values
 #'@param W is the total size of the knapsack
 #'@details This algorithm is approximative, it can be shown that it will return at least 50 % of the true maximum value. The value of this algorithm lies in the low computational time
 #'@author Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 #'@examples
-#'greedy_knapsack(knapsack_objects[1:800], 3500)
-#'greedy_knapsack(knapsack_objects[1:1200], 2000)
+#'greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+#'greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
 #'@references
 #'\url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
 #'@seealso
-#'\code{\link{Greedy heuristic}}
+#'\code{\link{brute_force_knapsack_forfiling}}
+#'\code{\link{brute_force_knapsack}}
+#'\code{\link{knapsack_dynamic}}
 #'@export
-
-# #### Knapsack dataset ####
-# # 2000 / 1000000
-# set.seed(42)
-# n <- 2000
-# knapsack_objects <-
-#   data.frame(
-#     w=sample(1:4000, size = n, replace = TRUE),
-#     v=runif(n = n, 0, 10000)
-#     )
-
-#### Assignment 1.1.4 Greedy heuristic ####
 
 greedy_knapsack <- function(x, W){
   

@@ -1,13 +1,5 @@
 context('Test dynamic programming')
 
-set.seed(42)
-n <- 2000
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
-
 test_that('knapsack dynamic',{
   expect_equal(knapsack_dynamic(knapsack_objects[1:8,],3500)$value, 16770)
   expect_equal(knapsack_dynamic(knapsack_objects[1:8,],3500)$elements, c(5,8))
@@ -18,7 +10,6 @@ test_that('knapsack dynamic',{
   expect_equal(knapsack_dynamic(knapsack_objects[1:12,],2000)$value, 15428)
   expect_equal(knapsack_dynamic(knapsack_objects[1:12,],2000)$elements, c(3,8))
 })
-
 
 test_that('knapsack dynamic',{
   expect_error(knapsack_dynamic(knapsack_objects,TRUE))

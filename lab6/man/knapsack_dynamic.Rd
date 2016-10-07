@@ -21,15 +21,20 @@ This function calculates all possible alternatives and return the maximum value.
 This function calculates in the easiest way to enumerate all different combinations.
 }
 \examples{
-brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
-brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
-brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
-brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+knapsack_dynamic(x = knapsack_objects[1:12,], W = 3500)
+knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
+knapsack_dynamick(x = knapsack_objects[1:12,], W = 2000)
+knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 }
 \author{
 Yumeng Li, Mattias Karlsson, Ashraf Sarhan
 }
 \references{
 \url{https://en.wikipedia.org/wiki/Knapsack_problem#0.2F1_knapsack_problem}
+}
+\seealso{
+\code{\link{brute_force_knapsack_forfiling}}
+\code{\link{greedy_heuristic}}
+\code{\link{brute_force_knapsack}}
 }
 
