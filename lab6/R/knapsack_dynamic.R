@@ -19,19 +19,21 @@
 
 
 # generate data
-set.seed(42)
-n <- 2000
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
+# set.seed(42)
+# n <- 2000
+# knapsack_objects <-
+#   data.frame(
+#     w=sample(1:4000, size = n, replace = TRUE),
+#     v=runif(n = n, 0, 10000)
+#   )
 
 # 1.1.3 Dynamic programming
 # wiki method
 knapsack_dynamic <- function(x, W){
   stopifnot(is.data.frame(x),
             is.numeric(W),
+            W != Inf,
+            W > 0,
             is.numeric(x$w),
             is.numeric(x$v),
             x$w >= 0,
@@ -88,7 +90,7 @@ knapsack_dynamic <- function(x, W){
 #knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 #knapsack_dynamic(x = knapsack_objects[1:12,], W = 2000)
 
-system.time(knapsack_dynamic(knapsack_objects[1:16,], 2000))
+# system.time(knapsack_dynamic(knapsack_objects[1:16,], 2000))
 
 # system.time(knapsack_dynamic(knapsack_objects[1:16,], 2000))
 # user  system elapsed
