@@ -23,17 +23,13 @@ profvis({
     sv = 0     # sum value
     sw = 0     # sum weight
     tv = c()   # temporary value
-    v_vect <- c()
-    w_vect <- c()
     for(j in 1:n){
       if(iv[j] == 1){
-        v_vect <- c(v_vect, x[j,'v'])
-        w_vect <- c(w_vect, x[j,'w'])
-        tv <- c(tv, j)
+        sv = sv + x[j, ]$v
+        sw = sw + x[j, ]$w
+        tv = c(tv, j)
       }
     }
-    sv = sum(v_vect)
-    sw = sum(w_vect)
     
     if((sv > maxv) && (sw <= W)){
       maxv = sv
