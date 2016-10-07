@@ -1,13 +1,5 @@
 context('Test Brute force search')
 
-set.seed(42)
-n <- 2000
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
-
 test_that('Brute force search',{
   expect_equal(brute_force_knapsack(knapsack_objects[1:8,],3500)$value, 16770)
   expect_equal(brute_force_knapsack(knapsack_objects[1:8,],3500)$elements, c(5,8))
@@ -18,7 +10,6 @@ test_that('Brute force search',{
   expect_equal(brute_force_knapsack(knapsack_objects[1:12,],2000)$value, 15428)
   expect_equal(brute_force_knapsack(knapsack_objects[1:12,],2000)$elements, c(3,8))
 })
-
 
 test_that('Brute force search',{
   expect_error(brute_force_knapsack(knapsack_objects,TRUE))

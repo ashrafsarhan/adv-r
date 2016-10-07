@@ -1,13 +1,5 @@
 context('Test Greedy heuristic')
 
-set.seed(42)
-n <- 2000
-knapsack_objects <-
-  data.frame(
-    w=sample(1:4000, size = n, replace = TRUE),
-    v=runif(n = n, 0, 10000)
-  )
-
 test_that('greedy heuristic',{
   expect_equal(greedy_knapsack(knapsack_objects[1:800,],3500)$value, 192647)
   expect_equal(greedy_knapsack(knapsack_objects[1:1200,],2000)$value, 212337)
