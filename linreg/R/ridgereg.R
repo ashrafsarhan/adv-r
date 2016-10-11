@@ -11,29 +11,33 @@
 #'@details This function calculates Ridge regression
 #'@export
 ridgereg <- function(formula, data, lambda){
-  # test
+  # Check if arguments is in a valid format
   stopifnot(formula == as.formula(formula), is.data.frame(data))
   
-  #  model.frame picks the right variables from the formula-object
+  # Model.frame picks the right variables from the formula-object
   X <- model.frame(formula = formula,
                    data = data)
-  print(X)
-  # stores dependent-variable
+  
+  # Store the dependent-variable
   Y <- X[,1]
-  print(Y)
-  # design matrix, independent-variables
+  
+  # Design matrix, independent-variables
   X <- model.matrix(object = formula,
                     data = X)
-  print(X)
   XT <- t(X)
   XTX <- XT %*% X
   
   if(all(eigen(XTX)$values <= 0)){
-    # test
-    # if eigenvalues are zero or less you can't invert the matrix
+    # If eigenvalues are zero or less you can't invert the matrix
     return("Cannot compute linear regression")
   } else {
-    XTXInv <- solve(XTX) # calculates the inverse
+    
+    # Creates the identity matrix. Multiplied with Lambda-parameter
+    ridge_matrix <- diag(x = 1, nrow = dim(XTX)[1], ncol = dim(XTX)[2])
+    lambda_matrix <- diag(x = lambda, nrow = dim(XTX)[1], ncol = dim(XTX)[2])
+    ridge_m_lambda <- lambda_matrix %*% ridge_matrix
+    
+    XTXInv <- solve(XTX + ridge_m_lambda) # calculates the inverse
     betaHat <- XTXInv %*% XT %*% Y # estimates
     betaHat <- round(x = betaHat, digits = 4) # matching with lm-function
     YHat <- as.vector(X %*% betaHat) # fitted-values
@@ -49,16 +53,12 @@ ridgereg <- function(formula, data, lambda){
     t_ratio <- round(x = t_ratio, digits = 2)
     p_value <- 1 - pt(q = abs(t_ratio), df = df) # p-values
     names(betaHat) <- names(t_ratio)
-    # trying to store everything in the linreg_class
-    result <- linreg_class$new(formula = as.character(formula),
-                               fitted_values = YHat,
-                               residuals = c(eHat),
-                               df = df,
-                               sigma2 = c(s2),
-                               beta_estimate = c(betaHat),
-                               beta_variance = c(diag(beta_variance)),
-                               t_ratio = t_ratio,
-                               p_value = p_value)
+    
+    # Return result as a class of rigereg
+    result <- ridgereg_class$new(fitted_values = YHat,
+                                 beta_estimate = c(betaHat)
+)
   }
-  return(result)
+  invisible(result)
+  # return(result)
 }
