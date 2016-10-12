@@ -1,0 +1,60 @@
+---
+title: "Vignette for ridgereg"
+author: "Yumeng Li, Mattias Karlsson, Ashraf Sarhan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Vignette Goal
+This vignette guides you through how to predict observations using the ridgereg() function.
+In this case we will predict flight delays
+
+## Function Discription
+Ridgereg(formula, data, lambda) 
+The function has three arguments.
+
+Ridge regression can be a good alternative when we have a lot of covariates (when p > n) or in the situation of multicollinearity.
+
+## Data
+Read in the weather dataset and the flights dataset from the nycflights13 package and remove
+eventual variables you do not believe to have a predictive value.
+```
+#### Step 1 ####
+library(nycflights13)
+library(dplyr)
+data(weather)
+data(flights)
+
+delay_d <- select(flights,time_hour,origin,dep_delay)
+
+# Subset JFK airport
+delay_d_jfk <- filter(delay_d,origin == "JFK")
+
+#### Step 2 #####
+
+# Weather data
+weather_d <- select(weather, time_hour,origin, wind_speed,precip,visib)
+
+# Subset JFK airport
+weather_d_jfk <- filter(weather_d, origin == "JFK")
+
+# Match datasets by time_hour variable
+
+delay_d_complete <- inner_join(delay_d_jfk, weather_d_jfk, by = "time_hour")
+head(delay_d_complete)
+
+#### Step 3 ####
+install.packages("caret", dependencies = c("Depends", "Suggests"))
+library(lattice)
+library(ggplot2)
+library(caret)
+
+test_rows <- createDataPartition(y = delay_d_complete[1:10000,], p = 0.05, list = FALSE)
+```
+
+## Ridge regression
+
