@@ -25,3 +25,14 @@ medvPred <- predict(model, newdata = testing)
 print(model)
 rslt <- cbind(actual = testing$medv, predict = medvPred)
 
+#Perform k-fold cross validation
+# define training control
+train_control <- trainControl(method="cv", number=10, savePredictions = TRUE)
+# train the model
+model <- train(medv ~ ., data = training, trControl=train_control, method = "leapForward")
+plot(model)
+medvPred <- predict(model, newdata = testing)
+# summarize results
+print(model)
+rslt <- cbind(actual = testing$medv, predict = medvPred)
+
