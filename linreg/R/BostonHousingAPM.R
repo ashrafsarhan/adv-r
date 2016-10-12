@@ -17,3 +17,11 @@ preProcValues <- preProcess(training, method = c("center", "scale"))
 trainTransformed <- predict(preProcValues, training)
 testTransformed <- predict(preProcValues, testing)
 
+# Fit a linear regression model with forward selection of covariates
+model <- train(medv ~ ., data = training, method = "leapForward")
+plot(model)
+medvPred <- predict(model, newdata = testing)
+# summarize results
+print(model)
+rslt <- cbind(actual = testing$medv, predict = medvPred)
+
