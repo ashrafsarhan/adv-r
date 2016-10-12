@@ -1,0 +1,102 @@
+---
+title: "Vignette for ridgereg"
+author: "Yumeng Li, Mattias Karlsson, Ashraf Sarhan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Vignette Goal
+The vignette shows how to do a simple prediction problem by using 
+ridgereg() function.
+
+Use the caret package and ridgereg() function to create a predictive model for the BostonHousing data found in the mlbench package.
+
+* Divide the BostonHousing data into a test and training dataset.
+* Fit a linear regression model and a fit a linear regression model with forward selection of covariates on the training dataset. 
+* Evaluate the performance of this model on the training dataset.
+* Fit a ridge regression model using ridgereg() function to the training dataset.
+* Find the best hyperparameter value.
+
+## Function Discription
+Ridgereg(formula, data, lambda) 
+The function has three arguments.
+
+Ridge regression can be a good alternative when we have a lot of covariates (when p > n) or in the situation of multicollinearity.
+
+
+## set up class
+```
+ridgereg_class <- setRefClass(
+  "ridgereg_class",
+  fields = list(
+    fitted_values = "numeric",
+    beta_estimate = "numeric"),
+ 
+  methods = list(
+    pred = function() {
+      return(fitted_values)
+    },
+    coef = function() {
+      return(beta_estimate) 
+    })
+)
+```
+
+## Big datasets handling with dplyr
+
+The function called visualize airport delays() without any arguments that creates a plot that visualizes the mean delay of flights for different airports of longitude and latitude by 3D Scatterplot with Coloring and Vertical Drop Lines.
+
+The datasets can be found in the nycflights13 package.
+
+```
+> head(tit)
+  airport      lat       lon mean_delay
+1     EWR 40.69250 -74.16867 15.1079544
+2     LGA 40.77725 -73.87261 10.3468756
+3     JFK 40.63975 -73.77893 12.1121591
+4     IAH 29.98443 -95.34144  4.2407904
+5     MIA 25.79325 -80.29056  0.2990598
+6     ATL 33.63672 -84.42807 11.3001128
+
+> tail(tit)
+    airport      lat        lon  mean_delay
+98      MVY 41.39167  -70.61528  -0.2857143
+99      SBN 41.70866  -86.31725   6.5000000
+100     LEX 38.03650  -84.60589 -22.0000000
+101     CHO 38.13864  -78.45286   9.5000000
+102     TVC 44.74144  -85.58223  12.9684211
+103     ANC 61.17436 -149.99636  -2.5000000
+```
+
+
+## Unit Tests
+
+To compare the results, we compare with lm.ridge() in the MASS package that is parametrized in the same way. But it uses SVD decomposition so there can be small differences in the results. We use floor() function to minimize the difference.
+
+```
+# extract result from lm.ridge()
+fit1 <- lm.ridge(formula = Petal.Length ~ Species, data = iris, lambda = 3)
+
+# extract result from lingre
+test1 <- ridgereg(formula = Petal.Length ~ Species, data = iris, lambda = 3)
+
+# unit test for each value
+test_that("linreg methods", {
+  expect_equivalent(floor(test1$beta_estimate[1]), floor(coef(fit1))[1])
+  expect_equivalent(floor(test1$beta_estimate[2]), floor(coef(fit1))[2])
+  expect_equivalent(floor(test1$beta_estimate[3]), floor(coef(fit1))[3])
+ 
+})
+```
+
+## Examples
+
+```
+ridgereg(formula = Petal.Length ~ Species, data = iris, lambda = 3)
+```
+
+
