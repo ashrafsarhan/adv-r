@@ -55,9 +55,10 @@ ridgereg <- function(formula, data, lambda){
     names(betaHat) <- names(t_ratio)
     
     # Return result as a class of rigereg
-    result <- ridgereg_class$new(fitted_values = YHat,
+    result <- ridgereg_class$new(formula = as.character(formula),
+                                 fitted_values = YHat,
                                  beta_estimate = c(betaHat)
-)
+    )
   }
   invisible(result)
   # return(result)
