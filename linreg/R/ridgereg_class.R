@@ -6,14 +6,15 @@ ridgereg_class <- setRefClass(
     beta_estimate = "numeric"),
   
   methods = list(
-    print = function() {
+    print = function(){
       cat('Call:\n','linreg(formula = ',formula[2],'~',formula[3],')\n\n',sep = '')
     },
-    pred = function() {
+    predict = function(){
       return(fitted_values)
     },
-    coef = function() {
+    coef = function(){
       return(beta_estimate) 
-    })
+    }
+    )
 )
 
