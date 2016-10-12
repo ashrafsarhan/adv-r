@@ -98,23 +98,30 @@ test$fitted_values
 
 train_f <- function(data,lambda,formula){
   
-  count <- seq(from = 0,to = lambda, by = 0.1)
+  count <- seq(from = 0,to = lambda, by = 0.05)
   save <- data.frame("lambda" = count)
   y <- as.character(formula)[2]
   
   for(i in 1:length(count)){
+    browser()
     call <- ridgereg(formula,data,lambda = count[i])
-    save$RMSE[i] <- sqrt(mean((data[-1,y] - call$fitted_values)^2))
-    # print(length(data[-1,y]))
-    # print(length(call$fitted_values))
+    save$RMSE[i] <- sqrt(mean((data[,y] - call$fitted_values)^2))
+    print(length(data[,y]))
+    anyNA(data[,y])
+    print(length(call$fitted_values))
+    anyNA(call$fitted_values)
   }
   return(save[which.min(save$RMSE),])
 }
 
-train_f(data = validation_sample,lambda = 1,formula = call_f)
-
 call_f <- formula(dep_delay ~ wind_speed+precip+visib)
+train_f(data = validation_sample,lambda = 10,formula = call_f)
 
+# Lambda = 2 ; RMSE 50.22854
+
+#### Step 5 ####
+
+train_f(data = test_sample,lambda = 2,formula = call_f)
 ```
 
 
