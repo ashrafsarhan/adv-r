@@ -7,7 +7,7 @@ ridgereg_class <- setRefClass(
   
   methods = list(
     print = function(){
-      cat('Call:\n','linreg(formula = ',formula[2],'~',formula[3],')\n\n',sep = '')
+      cat("Call:\n","ridgereg(formula = ", formula[2],"~", formula[3],")")
     },
     predict = function(){
       return(fitted_values)
@@ -15,6 +15,11 @@ ridgereg_class <- setRefClass(
     coef = function(){
       return(beta_estimate) 
     }
-    )
+  )
 )
+
+#test1 <- ridgereg(formula = Petal.Length ~ Species, data = iris, lambda = 3)
+#test1$print()
+#test1$predict()
+#test1$coef()
 
