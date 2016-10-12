@@ -88,6 +88,37 @@ validation_rows <- createDataPartition(y = delay_d_complete$month,
 validation_sample <- delay_d_complete[validation_rows,]
 
 ```
+## Ridge Regression - Validation dataset
+```
+#### Step 4 ####
+
+test <- ridgereg(formula = call_f, data = validation_sample, lambda = 0.5)
+test$fitted_values
+# Evaluate Lambda by comparing RMSE values
+
+train_f <- function(data,lambda,formula){
+  
+  count <- seq(from = 0,to = lambda, by = 0.1)
+  save <- data.frame("lambda" = count)
+  y <- as.character(formula)[2]
+  
+  for(i in 1:length(count)){
+    call <- ridgereg(formula,data,lambda = count[i])
+    save$RMSE[i] <- sqrt(mean((data[-1,y] - call$fitted_values)^2))
+    # print(length(data[-1,y]))
+    # print(length(call$fitted_values))
+  }
+  return(save[which.min(save$RMSE),])
+}
+
+train_f(data = validation_sample,lambda = 1,formula = call_f)
+
+call_f <- formula(dep_delay ~ wind_speed+precip+visib)
+
+```
+
 
 ## Ridge regression
+
+
 
