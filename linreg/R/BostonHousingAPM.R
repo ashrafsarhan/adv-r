@@ -11,3 +11,9 @@ training <- BostonHousing[inTrain,]
 cat('training: ', nrow(training))
 testing <- BostonHousing[-inTrain,]
 cat('testing: ', nrow(testing))
+
+#Centering and Scaling
+preProcValues <- preProcess(training, method = c("center", "scale"))
+trainTransformed <- predict(preProcValues, training)
+testTransformed <- predict(preProcValues, testing)
+
