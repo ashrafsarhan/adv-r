@@ -10,20 +10,16 @@ vignette: >
 ---
 
 ## Vignette Goal
-This vignette guides you through how to predict observations using the ridgereg() function.
-In this case we will predict flight delays within JFK airport.
+This vignette guides you through how to predict observations using the ridgereg() function from package Linreg. In this case we will predict flight delays within JFK airport.
 
 ## Function Discription
 Ridgereg(formula, data, lambda) 
-The function has three arguments.
 
 Ridge regression can be a good alternative when we have a lot of covariates (when p > n) or in the situation of multicollinearity.
 
 ## Data
-Read in the weather dataset and the flights dataset from the nycflights13 package and remove
-eventual variables you do not believe to have a predictive value.
+Read in the weather dataset and the flights dataset from the nycflights13 package and remove eventual variables you do not believe to have a predictive value.
 ```
-#### Step 1 ####
 library(nycflights13)
 library(dplyr)
 data(weather)
@@ -31,12 +27,27 @@ data(flights)
 
 # Pick needed variables
 delay_d <- select(flights,time_hour,origin,dep_delay)
+delay_d <- filter(delay_d,dep_delay>0)
 
 # Subset JFK airport
 delay_d_jfk <- filter(delay_d,origin == "JFK")
+```
+Variable dep_delay say how many minutes the plane was delayed. date_hour variable is the variable that is used to match the weather data. Splits the data so dep_delays contains only positive values, because we are only interested in flight that has been delayed.
+```{r, echo = FALSE}
+suppressMessages(library(nycflights13))
+suppressMessages(library(dplyr))
+data(weather)
+data(flights)
 
-#### Step 2 #####
+# Pick needed variables
+delay_d <- select(flights,time_hour,origin,dep_delay)
+delay_d <- filter(delay_d,dep_delay>0)
+# Subset JFK airport
+delay_d_jfk <- filter(delay_d,origin == "JFK")
+head(delay_d_jfk)
+```
 
+```
 # Weather data
 weather_d <- select(weather,time_hour,origin, wind_speed,precip,visib,month)
 
@@ -54,12 +65,38 @@ delay_d_complete <- filter(delay_d_complete,dep_delay>0)
 # Convert to data.frame lets us use createDataPartition function
 delay_d_complete <- as.data.frame(delay_d_complete)
 delay_d_complete$month <- as.factor(delay_d_complete$month)
+```
+Weather data set contains the explanatory variables to be used in the model.
+
+precip = Preciptation, in inches
+wind_speed = Wind speed (in mph)
+visib = Visibility in miles
+month = Time of recording
+
+```{r,echo = FALSE}
+# Weather data
+weather_d <- select(weather,time_hour,origin, wind_speed,precip,visib,month)
+
+# Subset JFK airport
+weather_d_jfk <- filter(weather_d, origin == "JFK")
+
+# Match datasets by time_hour variable
+
+delay_d_complete <- inner_join(delay_d_jfk, weather_d_jfk, by = "time_hour")
+delay_d_complete <- select(delay_d_complete,-origin.y,-origin.x)
+
+# Keep row that have a positive value on dep_delay
+#delay_d_complete <- filter(delay_d_complete,dep_delay>0)
+
+delay_d_complete <- as.data.frame(delay_d_complete)
+delay_d_complete$month <- as.factor(delay_d_complete$month)
 
 head(delay_d_complete)
-str(delay_d_complete)
+```
 
-#### Step 3 ####
-#install.packages("caret", dependencies = c("Depends", "Suggests"))
+## Test/Train/Validation dataset
+We will now divide the data set into three parts, testing, training and validation sets. The division of the observations to each set is, 5%, 80% and 15%
+```
 library(lattice)
 library(ggplot2)
 library(caret)
@@ -88,14 +125,54 @@ validation_rows <- createDataPartition(y = delay_d_complete$month,
 validation_sample <- delay_d_complete[validation_rows,]
 
 ```
-## Ridge Regression - Validation dataset
+```{r, echo = FALSE}
+suppressMessages(library(lattice))
+suppressMessages(library(ggplot2))
+suppressMessages(library(caret))
+
+set.seed(123456789)
+test_rows <- createDataPartition(y = delay_d_complete$month,
+                                 p = 0.05,
+                                 list = FALSE)
+test_sample <- delay_d_complete[test_rows,]
+
 ```
-#### Step 4 ####
+Test dataset
+```{r,echo=FALSE}
+head(test_sample)
+```
 
-test <- ridgereg(formula = call_f, data = validation_sample, lambda = 0.5)
-test$fitted_values
-# Evaluate Lambda by comparing RMSE values
+Train dataset
+```{r, echo=FALSE}
+# Remove observation that got into the test sample
+delay_d_complete <- delay_d_complete[-test_rows,]
 
+train_rows <- createDataPartition(y = delay_d_complete$month,
+                                  p = 0.80,
+                                  list = FALSE)
+train_sample <- delay_d_complete[train_rows,]
+
+head(train_sample)
+
+```
+Validation dataset
+```{r, echo = FALSE}
+# Remove observation from that got into train sample
+
+delay_d_complete <- delay_d_complete[-train_rows,]
+
+validation_rows <- createDataPartition(y = delay_d_complete$month,
+                                          p = 0.15,
+                                          list = FALSE)
+validation_sample <- delay_d_complete[validation_rows,]
+
+head(validation_sample)
+```
+
+# Ridge Regression - Validation dataset
+Train ridge regressions models for di↵erent values of lambda and evaluate the root mean squared error (RMSE)on the validation set.
+In this case, we check the lambda values between 0-10
+```{r, echo = TRUE}
 train_f <- function(data,lambda,formula){
   
   count <- seq(from = 0,to = lambda, by = 0.05)
@@ -117,15 +194,10 @@ train_f <- function(data,lambda,formula){
 call_f <- formula(dep_delay ~ wind_speed+precip+visib)
 train_f(data = validation_sample,lambda = 10,formula = call_f)
 
-# Lambda = 2 ; RMSE 50.22854
+```
+Lambda = 2 ; RMSE 50.22854
 
-#### Step 5 ####
-
+# Ridge Regression - Test dataset
+```{r, echo = TRUE}
 train_f(data = test_sample,lambda = 2,formula = call_f)
 ```
-
-
-## Ridge regression
-
-
-
