@@ -201,6 +201,51 @@ prediction <- ridgereg(data = test_sample,lambda = 0,formula = call_f)
 head(prediction$fitted_values)
 ```
 The RMSE value for the model is presented below.
-```{r, echo = TRUE}
-train_f(data = test_sample,lambda = 0,formula = call_f)
 ```
+#### Include ridgereb in caret package
+svmGrid <- function(x, y, len = NULL, search = "grid") {
+  #library(kernlab)
+  ## This produces low, middle and high values for sigma 
+  ## (i.e. a vector with 3 elements). 
+  #sigmas <- sigest(as.matrix(x), na.action = na.omit, scaled = TRUE)  
+  ## To use grid search:
+  if(search == "grid") {
+    out <- expand.grid(lambda = c(0, 10^seq(-1, -4, length = len - 1)))
+  } else {
+    ## For random search, define ranges for the parameters then
+    ## generate random values for them
+    out <- data.frame(lambda = 10^runif(len, min = -5, 1))
+  }
+  out
+}
+
+train_x <- validation_sample
+train_y <- validation_sample$dep_delay
+train_p <- "lambda"
+train_y <- 5
+
+svmFit <- function(x,y,param){
+  ksvm(as.matrix(x),
+       y = y,
+       kernel = rbfdot,
+       kpar = list(lambda = param$lambda))
+}
+
+ridge_list <- list(library = "linreg",
+                   type = "regression",
+                   parameters = data.frame(parameter = "lambda",
+                                           class = "numeric",
+                                           label = "Lambda"),
+                   grid = svmGrid,
+                   #(x = train_x,y = train_y, param = train_p)
+                   fit = svmFit)
+
+Lambda_optimize <- train(data = validation_sample,
+      x = validation_sample[1:100,3:5],
+      y = c(1:100),
+      form = call_f,
+      type = ridge_list,
+      maxit = 100)
+```
+
+
