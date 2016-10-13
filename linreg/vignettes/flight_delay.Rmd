@@ -198,6 +198,12 @@ train_f(data = validation_sample,lambda = 10,formula = call_f)
 Lambda = 2 ; RMSE 50.22854
 
 # Ridge Regression - Test dataset
+We now predict the observations for the test set by using the evaluated lambda value above.
+```{r, echo = TRUE}
+prediction <- ridgereg(data = test_sample,lambda = 2,formula = call_f)
+head(prediction$fitted_values)
+```
+The RMSE value for the model is presented below.
 ```{r, echo = TRUE}
 train_f(data = test_sample,lambda = 2,formula = call_f)
 ```
