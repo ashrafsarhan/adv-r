@@ -173,7 +173,7 @@ head(validation_sample)
 
 # Ridge Regression - Validation dataset
 Train ridge regressions models for di↵erent values of lambda and evaluate the root mean squared error (RMSE)on the validation set.
-In this case, we check the lambda values between 0-10
+In this case, we check the lambda values between 0-10.
 ```{r, echo = TRUE}
 train_f <- function(data,lambda,formula){
   
@@ -182,13 +182,8 @@ train_f <- function(data,lambda,formula){
   y <- as.character(formula)[2]
   
   for(i in 1:length(count)){
-    browser()
     call <- ridgereg(formula,data,lambda = count[i])
-    save$RMSE[i] <- sqrt(mean((data[,y] - call$fitted_values)^2))
-    print(length(data[,y]))
-    anyNA(data[,y])
-    print(length(call$fitted_values))
-    anyNA(call$fitted_values)
+    save$RMSE[i] <- sqrt(mean((data[-1,y] - call$fitted_values)^2))
   }
   return(save[which.min(save$RMSE),])
 }
@@ -197,15 +192,14 @@ call_f <- formula(dep_delay ~ wind_speed+precip+visib)
 train_f(data = validation_sample,lambda = 10,formula = call_f)
 
 ```
-Lambda = 2 ; RMSE 50.22854
 
 # Ridge Regression - Test dataset
 We now predict the observations for the test set by using the evaluated lambda value above.
 ```{r, echo = TRUE}
-prediction <- ridgereg(data = test_sample,lambda = 2,formula = call_f)
+prediction <- ridgereg(data = test_sample,lambda = 0,formula = call_f)
 head(prediction$fitted_values)
 ```
 The RMSE value for the model is presented below.
 ```{r, echo = TRUE}
-train_f(data = test_sample,lambda = 2,formula = call_f)
+train_f(data = test_sample,lambda = 0,formula = call_f)
 ```
