@@ -68,4 +68,130 @@ test_that("linreg methods", {
 ridgereg(formula = Petal.Length ~ Species, data = iris, lambda = 3)
 ```
 
+## Simple prediction
 
+### Dataset:
+The BostonHousing data consists of 506 observations and 14 non constant independent variables. The variables are listed here along with their meaning:
+
+```
+'data.frame':	506 obs. of  14 variables:
+ $ crim   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ...
+ $ zn     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ...
+ $ indus  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ...
+ $ chas   : Factor w/ 2 levels "0","1": 1 1 1 1 1 1 1 1 1 1 ...
+ $ nox    : num  0.538 0.469 0.469 0.458 0.458 0.458 0.524 0.524 0.524 0.524 ...
+ $ rm     : num  6.58 6.42 7.18 7 7.15 ...
+ $ age    : num  65.2 78.9 61.1 45.8 54.2 58.7 66.6 96.1 100 85.9 ...
+ $ dis    : num  4.09 4.97 4.97 6.06 6.06 ...
+ $ rad    : num  1 2 2 3 3 3 5 5 5 5 ...
+ $ tax    : num  296 242 242 222 222 222 311 311 311 311 ...
+ $ ptratio: num  15.3 17.8 17.8 18.7 18.7 18.7 15.2 15.2 15.2 15.2 ...
+ $ b      : num  397 397 393 395 397 ...
+ $ lstat  : num  4.98 9.14 4.03 2.94 5.33 ...
+ $ medv   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ...
+
+Variable  |                             Difination 
+--------- | --------------------------------------------------------------------
+crim      | per capita crime rate by town.
+zn        | proportion of residential land zoned for lots over 25,000 sq. ft.
+indus     | proportion of non-retain business acres per town.
+chas      | Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+nox       | nitrogen oxides concentration (parts per million).
+rm        | average number of rooms per dwelling.
+age       | proportion of owner-occupied units built prior to 1940.
+dis       |weighted mean of distances to five Boston employment centers.
+rad       |index of accessibility to radial highways
+tax       |full-value property-tax rate per $10,000
+ptratio   |pupil-teacher ratio by town
+black     |1000(Bk – 0.63)^2, where Bk is the proportion of blacks by town.
+lstat     |lower status of the population (percent).
+medv      |median value of owner-occupied homes in $1000s.      
+```
+Using medv as a response variable while the other 13 variables are possible predictors. The goal of this analysis is to fit a linear regression model with forward selection of covariates that best explains the variation in medv using `caret` package. 
+    
+### Leveraging caret:
+
+#### 1. Data splitting:
+
+We defined an 80%/20% train/test split of the dataset
+
+```
+split=0.80
+inTrain <- createDataPartition(BostonHousing$medv, p = split, list = FALSE)
+training <- BostonHousing[inTrain,]
+cat('training: ', nrow(training))
+testing <- BostonHousing[-inTrain,]
+cat('testing: ', nrow(testing))
+})
+```
+#### 2. Pre-Processing:
+
+Some variables may require transformations to better fit the model. Using `caret` package Centering and preProcess feature to center scale and transform variables in the our two datasets as follow:
+
+```
+preProcValues <- preProcess(training, method = c("center", "scale"))
+trainTransformed <- predict(preProcValues, training)
+testTransformed <- predict(preProcValues, testing)
+```
+
+#### 3. Model Training:
+Using linear regression model with forward selection and the training.
+
+```
+model <- train(medv ~ ., data = training, method = "leapForward")
+plot(model)
+medvPred <- predict(model, newdata = testing)
+
+```
+##### Resut:
+
+```
+Linear Regression with Forward Selection 
+
+407 samples
+ 13 predictors
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 407, 407, 407, 407, 407, 407, ... 
+Resampling results across tuning parameters:
+
+  nvmax  RMSE      Rsquared 
+  2      5.820067  0.5891586
+  3      5.277046  0.6593927
+  4      5.287599  0.6585820
+
+RMSE was used to select the optimal model using  the smallest value.
+The final value used for the model was nvmax = 3. 
+
+```
+
+##### k-fold Cross-Validation Resampling (10 fold):
+
+```
+# define training control
+train_control <- trainControl(method="cv", number=10, savePredictions = TRUE)
+# train the model
+model <- train(medv ~ ., data = training, trControl=train_control, method = "leapForward")
+```
+###### Resut:
+
+```
+Linear Regression with Forward Selection 
+
+407 samples
+ 13 predictors
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 407, 407, 407, 407, 407, 407, ... 
+Resampling results across tuning parameters:
+
+  nvmax  RMSE      Rsquared 
+  2      5.820067  0.5891586
+  3      5.277046  0.6593927
+  4      5.287599  0.6585820
+
+RMSE was used to select the optimal model using  the smallest value.
+The final value used for the model was nvmax = 3. 
+```
