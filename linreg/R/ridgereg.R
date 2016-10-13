@@ -1,6 +1,6 @@
 #' Store output from a OLS model in a ridgereg object
 #'
-#' This function calculates fitted values, residuals, degrees of freedom, t-ratio and p-values
+#' This function calculates fitted values and coefficents
 #'
 #'@param formula, writen as a formula-object, see example.
 #'@param data, a data.frame object with standardized variables
@@ -55,9 +55,10 @@ ridgereg <- function(formula, data, lambda){
     names(betaHat) <- names(t_ratio)
     
     # Return result as a class of rigereg
-    result <- ridgereg_class$new(fitted_values = YHat,
+    result <- ridgereg_class$new(formula = as.character(formula),
+                                 fitted_values = YHat,
                                  beta_estimate = c(betaHat)
-)
+    )
   }
   invisible(result)
   # return(result)

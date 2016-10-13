@@ -1,15 +1,22 @@
 Package: linreg
 Type: Package
-Title: An implementation of the linear regression
+Title: An implementation of the linear regression and ridge regression
 Version: 0.1.0
 Author: Ashraf Sarhan <ashraf.sar7an@gmail.com>, Yumeng Li
     <lemonisa.lee@gmail.com>, Mattias Karlsson <tillmattias@gmail.com>
 Maintainer: Yumeng Li <lemonisa.lee@gmail.com>
-Description:  This function calculates fitted values, residuals,
+Description: This function calculates fitted values, residuals,
     degrees of freedom, t-ratio and p-values
 License: GPL (>= 2)
 LazyData: TRUE
-Suggests: knitr,
+Suggests:
+    knitr,
     rmarkdown
 VignetteBuilder: knitr
-Imports:ggplot2 (>= 2.1.0), grid, gridExtra
+Imports:
+    ggplot2 (>= 2.1.0),
+    grid,
+    gridExtra,
+    nycflights13,
+    dplyr
+RoxygenNote: 5.0.1
