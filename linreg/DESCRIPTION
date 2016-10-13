@@ -1,6 +1,6 @@
 Package: linreg
 Type: Package
-Title: An implementation of the linear regression
+Title: An implementation of the linear regression and ridge regression
 Version: 0.1.0
 Author: Ashraf Sarhan <ashraf.sar7an@gmail.com>, Yumeng Li
     <lemonisa.lee@gmail.com>, Mattias Karlsson <tillmattias@gmail.com>

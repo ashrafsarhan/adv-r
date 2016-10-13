@@ -36,6 +36,7 @@ Variable dep_delay say how many minutes the plane was delayed. date_hour variabl
 ```{r, echo = FALSE}
 suppressMessages(library(nycflights13))
 suppressMessages(library(dplyr))
+suppressMessages(library(linreg))
 data(weather)
 data(flights)
 
@@ -96,6 +97,7 @@ head(delay_d_complete)
 
 ## Test/Train/Validation dataset
 We will now divide the data set into three parts, testing, training and validation sets. The division of the observations to each set is, 5%, 80% and 15%
+Each set is
 ```
 library(lattice)
 library(ggplot2)

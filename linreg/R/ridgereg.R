@@ -1,6 +1,6 @@
 #' Store output from a OLS model in a ridgereg object
 #'
-#' This function calculates fitted values, residuals, degrees of freedom, t-ratio and p-values
+#' This function calculates fitted values and coefficents
 #'
 #'@param formula, writen as a formula-object, see example.
 #'@param data, a data.frame object with standardized variables
