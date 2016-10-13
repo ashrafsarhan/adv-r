@@ -5,9 +5,11 @@ ridgereg_class <- setRefClass(
     fitted_values = "numeric",
     beta_estimate = "numeric"),
   
-  methods = list(
+   methods = list(
     print = function(){
-      cat("Call:\n","ridgereg(formula = ", formula[2],"~", formula[3],")")
+      cat("Call:\n","ridgereg(formula = ", formula[2],"~", formula[3],
+          ")\n\n","Coefficients:\n",sep = '')
+      return(beta_estimate)
     },
     predict = function(){
       return(fitted_values)
