@@ -1,3 +1,9 @@
+#' @title Visualization of airports of flights delay 
+#' @description visualizes the mean delay of flights for different airports by longitude and latitude
+#' @return A map of airports.
+#' @export
+
+
 # 1.1.5 Handling large datasets with dplyr
 visualize_airport_delays <- function(){
   library(tidyr)
@@ -8,72 +14,50 @@ visualize_airport_delays <- function(){
   library(nycflights13)
   data("flights")
   data("airports")
+  
+  # subset varibales(col)
+  flights <- dplyr::select(flights, dest, dep_delay, arr_delay)
+  airports <- dplyr::select(airports, faa, name, lat, lon)
+   
+  # add new col of sum of dep_delay & arr_delay
+  flights <- dplyr::mutate(flights, total_delay = dep_delay + arr_delay)
+  
+  # calculate the mean delay for each airport
+  flights <- dplyr::select(flights, dest, total_delay)
+  grp_flights <- dplyr::group_by(flights, dest)
+  agg_flights <-dplyr::summarise(grp_flights, mean_delay = mean(total_delay, na.rm=TRUE))
+  names(agg_flights)[1] <- "faa"
+  
+  # join 2 datasets
+  joins <- dplyr::inner_join(agg_flights, airports, by="faa")
+  joins <- filter(joins, faa != "LGA")           # remove row, NA in  faa = LGA
+  
+  # change negtive mean_delay to 0 of 3 observations 
+  joins <- dplyr::arrange(joins, mean_delay)
+  joins[c(1,2,3), 2] <- c(0,0,0)
+  
+  lon_scale <- c(min(joins$lon), max(joins$lon))
+  lat_scale <- c(min(joins$lat), max(joins$lat))
 
-  # Data Wrangling of flights
-  # Select columns by name
-  delay_dep <- as.data.frame(select(flights, dep_delay, origin))
-  colnames(delay_dep) <- c("delay_minutes", "airport")
-  delay_arr <- as.data.frame(select(flights, arr_delay, dest))
-  colnames(delay_arr) <- c("delay_minutes", "airport")
+  # plot a map of joins
+  library(ggplot2)
+  library(rworldmap)
+  library(ggalt)
+  library(ggthemes)
+  
+  world <-  map_data("world")
+  gg <- ggplot() +
+    coord_cartesian(xlim=(lon_scale * 1.1), ylim=(lat_scale * 1.1)) +
+    geom_map(data = world, map = world,
+             aes(x = long, y = lat, map_id=region),
+             color="white", fill="lightblue", size=0.05, alpha=1/4) + 
+    geom_point(data=joins, 
+               aes(x=lon, y=lat, color=mean_delay, size=sqrt(mean_delay))) + 
+    ggtitle("Map of flights delay of US airports")
+  gg
 
-  # dplyr::bind_rows
-  delay_data <- bind_rows(delay_dep, delay_arr)
-  airport_unique <- unique(delay_data$airport)
-
-  # create a empty data frame
-  delay_select <- data.frame(airport = c(), mean_delay = c())
-
-  for(i in airport_unique){
-    #Extract rows that meet logical criteria.
-    airport <- filter(delay_data, airport == i)
-    delay <- as.vector(airport$delay_minutes)
-    mean <- mean(delay, na.rm = TRUE)
-    data1 <- data.frame(airport = i, mean_delay = mean)
-    delay_select <- bind_rows(delay_select, data1)
-  }
-  delay_select
-  #107 airports
-
-
-  # Data Wrangling of airports
-  airports_data <- as.data.frame(select(airports, faa, lat, lon))
-
-  # create a empty data frame
-  airports_new <- data.frame(faa = c(), lat = c(), lon = c())
-
-  for(i in airport_unique) {
-    #Extract rows that meet logical criteria.
-    airports_filter <- filter(airports_data, faa == i)
-    airports_new <- bind_rows(airports_new, airports_filter)
-  }
-  airports_new 
-  #103 airports
-
-
-  # select 103 airports from 107 airports in delay_new
-  delay_new <- data.frame()  
-  for(i in airports_new$faa){
-    #Extract rows that meet logical criteria.
-    data2 <- filter(delay_select, airport == i)
-    delay_new <- bind_rows(delay_new, data2)
-  }
-  delay_new
-
-
-  tit <- data.frame(airports_new$faa,airports_new$lat, 
-                    airports_new$lon, delay_new$mean_delay)
-  colnames(tit) <- c("airport","lat", "lon", "mean_delay" )
-
-  # 3D Scatterplot with Coloring and Vertical Drop Lines
-  library(scatterplot3d) 
-  scatterplot3d(tit$lat,
-                tit$lon,
-                tit$mean_delay, 
-                xlab = "longitude",
-                ylab = "latitude",
-                zlab = "mean of delay time (minutes)",
-                pch=16, highlight.3d=TRUE, type="h", 
-                main="3D Scatterplot of airport delay")
+  
 }
 
 visualize_airport_delays()
+
