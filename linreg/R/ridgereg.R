@@ -63,3 +63,40 @@ ridgereg <- function(formula, data, lambda){
   invisible(result)
   # return(result)
 }
+
+#' Ridge regression
+#'
+#'@param formula, a formula-object
+#'@param data, a data.frame object with standardized variables
+#'@param lambda, hyperparameter used to find the best model
+#'@return a ridgereg class-object containing regression outputs
+#'@author Leif Jonsson
+#'@details This function adapts OLS with ridge regression\
+#'@export
+#'@importFrom stats model.matrix
+rrfit<-function(formula, data, lambda = 0){
+  X <- model.matrix(formula, data)
+  yName <- all.vars(formula)[1]
+  Y <- data[, yName]
+  betas <- solve(t(X) %*% X + diag(lambda, nrow = ncol(X))) %*% t(X) %*% Y
+  y.hat <- (X %*% betas)
+  l<-list(coefficients=betas, y.hat = y.hat, formula=formula)
+  class(l) <- "ridgeregression"
+  return(l)
+}
+
+#' Ridge regression predict
+#'
+#'@param model, an ridgeregression model
+#'@param newdata, new data to do prediction from
+#'@return a vector with predictions
+#'@author Leif Jonsson
+#'@details This function adapts OLS with ridge regression
+#'@export
+rrpred<-function(model, newdata){
+  cnames <- colnames(newdata)
+  newdata <- cbind(1,newdata)
+  colnames(newdata) <- c("(Intercept)",cnames)
+  yHat <- as.matrix(newdata) %*% model$coefficients
+  as.vector(yHat)
+}
