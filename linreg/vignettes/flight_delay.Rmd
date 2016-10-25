@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ## Vignette Goal
-This vignette guides you through how to predict observations using the ridgereg() function from package Linreg. In this case we will predict flight delays within JFK airport.
+This vignette guides you through how to predict observations using the ridgereg() function from package Linreg. In this case we will predict flight delays based on two predictors (distance, wind_speed).
 
 ## Function Discription
 Ridgereg(formula, data, lambda) 
@@ -20,186 +20,138 @@ Ridge regression can be a good alternative when we have a lot of covariates (whe
 ## Data
 Read in the weather dataset and the flights dataset from the nycflights13 package and remove eventual variables you do not believe to have a predictive value.
 ```
-library(nycflights13)
-library(dplyr)
-data(weather)
-data(flights)
+library("nycflights13")
+flights_data <- flights
+weather_data <- weather
+all_data <- plyr::join(flights_data, weather_data, by=c('origin', 'year', 'time_hour'), type='inner')
+trgt_data <- all_data[,c('flight', 'origin', 'dest', 'arr_delay', 'distance', 'wind_speed')]
 
-# Pick needed variables
-delay_d <- select(flights,time_hour,origin,dep_delay)
-delay_d <- filter(delay_d,dep_delay>0)
+#Get rid of NA rows (Missing values) 
+trgt_data <- na.omit(trgt_data)
 
-# Subset JFK airport
-delay_d_jfk <- filter(delay_d,origin == "JFK")
+#Get rid of negative rows 
+negrows <- which(trgt_data$arr_delay < 0)
+trgt_data <- trgt_data[-negrows,]
 ```
-Variable dep_delay say how many minutes the plane was delayed. date_hour variable is the variable that is used to match the weather data. Splits the data so dep_delays contains only positive values, because we are only interested in flight that has been delayed.
+Variable dep\_delay say how many minutes the plane was delayed. origin, year, time\_hour variables are used to match the weather data. Splits the data so dep_delays contains only positive values, because we are only interested in flight that has been delayed.
 ```{r, echo = FALSE}
-suppressMessages(library(nycflights13))
-suppressMessages(library(dplyr))
-suppressMessages(library(linreg))
-data(weather)
-data(flights)
+library("nycflights13")
+flights_data <- flights
+weather_data <- weather
+all_data <- plyr::join(flights_data, weather_data, by=c('origin', 'year', 'time_hour'), type='inner')
+trgt_data <- all_data[,c('flight', 'origin', 'dest', 'arr_delay', 'distance', 'wind_speed')]
 
-# Pick needed variables
-delay_d <- select(flights,time_hour,origin,dep_delay)
-delay_d <- filter(delay_d,dep_delay>0)
-# Subset JFK airport
-delay_d_jfk <- filter(delay_d,origin == "JFK")
-head(delay_d_jfk)
+#Get rid of NA rows (Missing values) 
+trgt_data <- na.omit(trgt_data)
+
+#Get rid of negative rows 
+negrows <- which(trgt_data$arr_delay < 0)
+trgt_data <- trgt_data[-negrows,]
+head(trgt_data)
 ```
 
-```
-# Weather data
-weather_d <- select(weather,time_hour,origin, wind_speed,precip,visib,month)
-
-# Subset JFK airport
-weather_d_jfk <- filter(weather_d, origin == "JFK")
-
-# Match datasets by time_hour variable
-
-delay_d_complete <- inner_join(delay_d_jfk, weather_d_jfk, by = "time_hour")
-delay_d_complete <- select(delay_d_complete,-origin.y,-origin.x)
-
-# Keep row that have a positive value on dep_delay
-delay_d_complete <- filter(delay_d_complete,dep_delay>0)
-
-# Convert to data.frame lets us use createDataPartition function
-delay_d_complete <- as.data.frame(delay_d_complete)
-delay_d_complete$month <- as.factor(delay_d_complete$month)
-```
 Weather data set contains the explanatory variables to be used in the model.
-
+```
 precip = Preciptation, in inches
 wind_speed = Wind speed (in mph)
 visib = Visibility in miles
 month = Time of recording
-
-```{r,echo = FALSE}
-# Weather data
-weather_d <- select(weather,time_hour,origin, wind_speed,precip,visib,month)
-
-# Subset JFK airport
-weather_d_jfk <- filter(weather_d, origin == "JFK")
-
-# Match datasets by time_hour variable
-
-delay_d_complete <- inner_join(delay_d_jfk, weather_d_jfk, by = "time_hour")
-delay_d_complete <- select(delay_d_complete,-origin.y,-origin.x)
-
-# Keep row that have a positive value on dep_delay
-#delay_d_complete <- filter(delay_d_complete,dep_delay>0)
-
-delay_d_complete <- as.data.frame(delay_d_complete)
-delay_d_complete$month <- as.factor(delay_d_complete$month)
-
-head(delay_d_complete)
 ```
-
 ## Test/Train/Validation dataset
 We will now divide the data set into three parts, testing, training and validation sets. The division of the observations to each set is, 5%, 80% and 15%
 Each set is
 ```
-library(lattice)
-library(ggplot2)
-library(caret)
-
-set.seed(123456789)
-test_rows <- createDataPartition(y = delay_d_complete$month,
-                                 p = 0.05,
-                                 list = FALSE)
-test_sample <- delay_d_complete[test_rows,]
-
-# Remove observation that got into the test sample
-delay_d_complete <- delay_d_complete[-test_rows,]
-
-train_rows <- createDataPartition(y = delay_d_complete$month,
-                                  p = 0.80,
-                                  list = FALSE)
-train_sample <- delay_d_complete[train_rows,]
-
-# Remove observation from that got into train sample
-
-delay_d_complete <- delay_d_complete[-train_rows,]
-
-validation_rows <- createDataPartition(y = delay_d_complete$month,
-                                          p = 0.15,
-                                          list = FALSE)
-validation_sample <- delay_d_complete[validation_rows,]
+#Partition data set in training 80%, validation 15%, testing 5%.
+inTraining <- createDataPartition(trgt_data$arr_delay, p=.80, list=FALSE)
+training <- trgt_data[ inTraining,]
+cat('training: ', nrow(training))
+notTraining <- trgt_data[-inTraining,]
+inValidation <- createDataPartition(notTraining$arr_delay, p=.15, list=FALSE)
+validation <- notTraining[inValidation,]
+cat('validation: ', nrow(validation))
+testing <- notTraining[-inValidation,]
+cat('testing: ', nrow(testing))
 
 ```
-```{r, echo = FALSE}
-suppressMessages(library(lattice))
-suppressMessages(library(ggplot2))
-suppressMessages(library(caret))
-
-set.seed(123456789)
-test_rows <- createDataPartition(y = delay_d_complete$month,
-                                 p = 0.05,
-                                 list = FALSE)
-test_sample <- delay_d_complete[test_rows,]
-
+### Centering and Scaling data set
 ```
-Test dataset
-```{r,echo=FALSE}
-head(test_sample)
+#Centering and Scaling
+preProcValues <- preProcess(trgt_data[,4:6], method = c("center", "scale"))
+training <- predict(preProcValues, training)
+validation <- predict(preProcValues, validation)
+testing <- predict(preProcValues, testing)
 ```
 
-Train dataset
-```{r, echo=FALSE}
-# Remove observation that got into the test sample
-delay_d_complete <- delay_d_complete[-test_rows,]
-
-train_rows <- createDataPartition(y = delay_d_complete$month,
-                                  p = 0.80,
-                                  list = FALSE)
-train_sample <- delay_d_complete[train_rows,]
-
-head(train_sample)
-
-```
-Validation dataset
-```{r, echo = FALSE}
-# Remove observation from that got into train sample
-
-delay_d_complete <- delay_d_complete[-train_rows,]
-
-validation_rows <- createDataPartition(y = delay_d_complete$month,
-                                          p = 0.15,
-                                          list = FALSE)
-validation_sample <- delay_d_complete[validation_rows,]
-
-head(validation_sample)
-```
-
-# Ridge Regression - Validation dataset
+## Ridge Regression - Validation dataset
 Train ridge regressions models for di↵erent values of lambda and evaluate the root mean squared error (RMSE)on the validation set.
-In this case, we check the lambda values between 0-10.
-```{r, echo = TRUE}
-train_f <- function(data,lambda,formula){
-  
-  count <- seq(from = 0,to = lambda, by = 0.05)
-  save <- data.frame("lambda" = count)
-  y <- as.character(formula)[2]
-  
-  for(i in 1:length(count)){
-    call <- ridgereg(formula,data,lambda = count[i])
-    save$RMSE[i] <- sqrt(mean((data[-1,y] - call$fitted_values)^2))
-  }
-  return(save[which.min(save$RMSE),])
-}
+In this case, we check the lambda values between 0-5.
+```
+#Set lamada grid
+lambdaGrid <- seq(1,5,length=10)
+#Set search grid for lamada parameters
+tuneGrid= expand.grid(lambda=lambdaGrid) 
+# define training control
+trControl <- trainControl(method="repeatedCV", number=5)
+# Fit a ridge regression model using the validation dataset
+set.seed(100)
+model1 <- train(arr_delay ~ distance+wind_speed, data = validation, method = "ridge", 
+               tuneGrid=tuneGrid, trControl=trControl)
+# summarize results
+print(model1)
+```
+### Output:
+```
+Ridge Regression 
 
-call_f <- formula(dep_delay ~ wind_speed+precip+visib)
-train_f(data = validation_sample,lambda = 10,formula = call_f)
+4136 samples
+   2 predictors
 
+No pre-processing
+Resampling: Cross-Validated (5 fold, repeated 5 times) 
+Summary of sample sizes: 3309, 3308, 3310, 3309, 3308, 3309, ... 
+Resampling results across tuning parameters:
+
+  lambda    RMSE       Rsquared   
+  1.000000  0.9895768  0.003147062
+  1.444444  0.9895767  0.003147900
+  1.888889  0.9895767  0.003148479
+  2.333333  0.9895767  0.003148903
+  2.777778  0.9895767  0.003149228
+  3.222222  0.9895766  0.003149484
+  3.666667  0.9895766  0.003149691
+  4.111111  0.9895766  0.003149862
+  4.555556  0.9895766  0.003150006
+  5.000000  0.9895766  0.003150128
+
+RMSE was used to select the optimal model using  the smallest value.
+The final value used for the model was lambda = 5. 
 ```
 
-# Ridge Regression - Test dataset
+## Ridge Regression - Test dataset
 We now predict the observations for the test set by using the evaluated lambda value above.
-```{r, echo = TRUE}
-prediction <- ridgereg(data = test_sample,lambda = 0,formula = call_f)
-head(prediction$fitted_values)
+```
+# Predict the test set using the optimal lamada
+set.seed(100)
+model2 <- train(arr_delay ~ distance+wind_speed, data = training, method = "ridge", 
+                tuneGrid=expand.grid(lambda=5))
+pred <- predict(model2, newdata = testing)
+# summarize results
+print(model2)
 ```
 The RMSE value for the model is presented below.
-```{r, echo = TRUE}
-train_f(data = test_sample,lambda = 0,formula = call_f)
+```
+Ridge Regression 
+
+110234 samples
+     2 predictors
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+Summary of sample sizes: 110234, 110234, 110234, 110234, 110234, 110234, ... 
+Resampling results:
+
+  RMSE       Rsquared   
+  0.9997285  0.001950152
+
+Tuning parameter 'lambda' was held constant at a value of 5
 ```
